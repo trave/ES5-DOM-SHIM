@@ -1,7 +1,4 @@
-.sass-cache
 .idea
 *.DS_Store
-*.swp
-.project
-.settings
-*.iml
+out.js
+node_modules

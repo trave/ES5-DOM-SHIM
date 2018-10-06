@@ -1,5 +1,11 @@
 {
   "name": "es5-dom-shim",
   "version": "0.0.1",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "google-closure-compiler": "^20180910.1.0"
+  },
+  "scripts": {
+    "build": "google-closure-compiler --warning_level VERBOSE --compilation_level ADVANCED_OPTIMIZATIONS --jscomp_warning missingProperties --js src/a.js --js_output_file out.js"
+  }
 }
