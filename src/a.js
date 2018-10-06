@@ -619,7 +619,8 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				|| !_tmp_(_testElement)// does getOwnPropertyDescriptor work on DOM elements
 				|| (
 					!document.__proto__
-					|| !function () {
+					|| (function () {
+
 						//FireFox failed this test
 						try {
 							Object.getOwnPropertyDescriptor(
@@ -630,7 +631,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 						} catch (exception) {
 							return false;
 						}
-					}()
+					})()
 				)
 			) {
 				getOwnPropertyDescriptorFallback = Object.getOwnPropertyDescriptor;
@@ -788,9 +789,10 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * ES5 15.2.3.3
 			 * http://es5.github.com/#x15.2.3.3
 			 * Returns a property descriptor for an own property (that is, one directly present on an object, not present by dint of being along an object's prototype chain) of a given object.
-			 * @param {!Object} object The object in which to look for the property.
-			 * @param {!string} property The name of the property whose description is to be retrieved
-			 * @return {(Object.<(ObjectPropertyDescriptor|null)>|undefined)}
+			 * @param {!T} object The object in which to look for the property.
+			 * @param {!(string|symbol)} property The name of the property whose description is to be retrieved
+			 * @return {!ObjectPropertyDescriptor<T>|undefined}
+			 * @template T
 			 */
 			Object.getOwnPropertyDescriptor = function /*getOwnPropertyDescriptor GCC rename local function name anyway*/(object, property) {
 				if ((typeof object != "object" && typeof object != "function") || object === null) {
