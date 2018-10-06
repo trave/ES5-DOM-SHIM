@@ -1529,28 +1529,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
     }())
 	*/
 			, "EPSILON": 2.220446049250313e-16// 15.7.3.7
-
-			,
-			/**
-			 * Number.toInteger
-			 * 15.7.3.14
-			 *
-			 * @param value
-			 * @return {number}
-			 */
-			"toInteger": function (value) {
-				var number = +value;
-
-				if (global["isNaN"](number)) {
-					return 0;
-				}
-
-				if (number === 0 || !global["isFinite"](number)) {
-					return number;
-				}
-
-				return ((number < 0) ? -1 : 1) * Math.floor(Math.abs(number));
-			}
 		});
 	}//if __GCC__ECMA_SCRIPT6__
 
