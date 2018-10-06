@@ -229,7 +229,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	var _Array_map_;
 	var _Array_forEach_;
 	var array_some_or_every;
-	var array_find_or_findIndex;
 	var _String_trim_;
 	var _String_trim_whitespace = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF";
 	var _String_trim_left;
@@ -1049,39 +1048,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			"from": _Array_from
 		});
 
-		array_find_or_findIndex = _Array_prototype_["find"] && _Array_prototype_["findIndex"] ?
-			null
-			:
-			/**
-			 * @const
-			 * @param {Function} predicate
-			 * @param {Object} context
-			 * @param {boolean} _option_findIndex
-			 */
-			function (predicate, context, _option_findIndex) {
-				var thisArray = _toObject(this)
-					, length = thisArray.length >>> 0
-					, value
-					, i = 0
-				;
-
-				if (length === 0) {
-					return -1;
-				}
-
-				for (; i < length; ++i) {
-					if (i in thisArray) {
-						value = thisArray[i];
-						if (_call_function(predicate, context, value, i, this)) {
-							return _option_findIndex ? i : value;
-						}
-					}
-				}
-
-				return _option_findIndex ? -1 : undefined;
-			}
-		;
-
 		_append(_Array_prototype_, /** @lends {Array.prototype} */{
 			/**
 			 * Array.prototype.contains
@@ -1091,18 +1057,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 */
 			"contains": function (object) {
 				return !!~this.indexOf(object);
-			}
-
-			,
-			/**
-			 * Array.prototype.findIndex
-			 *
-			 * @param {Function} callback Function to test for each element.
-			 * @param {Object=} context Object to use as this when executing callback.
-			 * @return {number}
-			 */
-			"findIndex": function (callback, context) {
-				return array_find_or_findIndex.call(this, callback, context, true);
 			}
 
 		});
