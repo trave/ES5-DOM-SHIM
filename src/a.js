@@ -1495,34 +1495,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 		_append(_String_prototype, /** @lends {String.prototype} */{
 			/**
-			 * String.prototype.repeat
-			 * Implementation from https://raw.github.com/monolithed/ECMAScript-6/master/ES6.js
-			 * String repeat
-			 * @param {!number} count repeat times
-			 * @return {string} result
-			 *
-			 * edition ECMA-262 6th Edition, 15.5.4.21
-			 */
-			"repeat": function (count) {
-				if ((count = Number["toInteger"](count)) < 0) return "";
-
-				var result = ''
-					, self = this
-				;
-
-				while (count) {
-					if (count & 1)
-						result += self;
-
-					if (count >>= 1)
-						self += self;
-				}
-
-				return result;
-			}
-
-			,
-			/**
 			 * speed test: http://jsperf.com/starts-ends-with
 			 *
 			 * String.prototype.startsWith
