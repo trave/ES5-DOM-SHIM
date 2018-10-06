@@ -1,15 +1,7 @@
 ﻿/** @license ES6/DOM4 polyfill | @version 0.8.8 | MIT License | github.com/termi */
 
-// ==ClosureCompiler==
-// @compilation_level ADVANCED_OPTIMIZATIONS
-// @warning_level VERBOSE
-// @jscomp_warning missingProperties
-// @output_file_name a.js
-// @check_types
-// ==/ClosureCompiler==
-
 /**
- * TODO::
+ * TODO:
  * 0. eng comments
  * 2. HTMLCanvasElement.toBlob (https://developer.mozilla.org/en/DOM/HTMLCanvasElement | http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata#answer-5100158)
  * 3. MutationObserver http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/
@@ -22,73 +14,6 @@
  *   iii) https://developer.mozilla.org/en-US/docs/DOM/DOM_event_reference/mouseleave | https://developer.mozilla.org/en-US/docs/DOM/DOM_event_reference/mouseenter
  * 7. https://bugzilla.mozilla.org/show_bug.cgi?id=486002 (Node.compareDocumentPosition returns spurious preceding|following bits for disconnected nodes) :: https://bugzilla.mozilla.org/attachment.cgi?id=671404&action=diff
  */
-
-
-
-
-
-
-
-
-// [[[|||---=== GCC DEFINES START ===---|||]]]
-/*
-How to calculate bitmap:
-
-Object.keys(this).filter(function(a) {
-	return a.indexOf("__GCC__") == 0 }
-).reduce(function(value, name, index){
-	var group
-		, intValue
-	;
-
-	if( this[name] == true ) {
-		group = ~~(index / 31);
-		value = value.split("!");
-		if( !value[group] ) {
-			value[group] = "0";
-		}
-		intValue = value[group];
-		intValue |= Math.pow(2, index - group * 31);
-		value[group] = intValue;
-		value = value.join("!");
-	}
-
-	return value;
-}.bind(this), "0");
-*/
-
-/** @define {boolean} */
-var __GCC__IS_DEBUG__ = false;
-//IF __GCC__IS_DEBUG__ == true [
-//0. Some errors in console
-//1. Fix console From https://github.com/theshock/console-cap/blob/master/console.js
-//]
-
-/** @define {boolean} */
-var __GCC__UNSTABLE_FUNCTIONS__ = false;
-//IF __GCC__UNSTABLE_FUNCTIONS__ == true [
-//]
-
-/** @define {boolean} */
-var __GCC__INCLUDE_EXTRAS__ = true;
-//IF __GCC__INCLUDE_EXTRAS__ == true [
-//Exporting these objects to global (window)
-	/** 1. browser @define {boolean} */
-	var __GCC__INCLUDE_EXTRAS__BROWSER__ = false;
-	/** 2. Utils.Dom.DOMStringCollection @define {boolean} */
-	var __GCC__INCLUDE_EXTRAS__DOMSTRINGCOLLECTION__ = true;
-//Extending objects
-	/** 1. Object.append(object, donor, [donor2, ...]) @define {boolean} */
-	var __GCC__INCLUDE_EXTRAS__OBJECT_APPEND__ = true;
-	/** 2. Object.extend(object, donor, [donor2, ...]) (Object.append with overwrite exists properties) @define {boolean} */
- 	var __GCC__INCLUDE_EXTRAS__OBJECT_EXTEND__ = true;
-	/** 3. Object.inherit(Child, Parent) @define {boolean} */
- 	var __GCC__INCLUDE_EXTRAS__OBJECT_INHERITS__ = true;
-	/** 4. Array.prototype.unique() @define {boolean} */
- 	var __GCC__INCLUDE_EXTRAS__ARRAY_PROTOTYPE_UNIQUE__ = false;
-	/** 5. String.random(length) @define {boolean} */
- 	var __GCC__INCLUDE_EXTRAS__STRING_RANDOM__ = false;
-//]
 
 /** @define {boolean} */
 var __GCC__ECMA_SCRIPT5__ = true;
@@ -144,7 +69,6 @@ var __GCC__DOM_API_POLYFILL__ = true;
 		/** @define {boolean} */
 		var __GCC__DOM_API_POLYFILL_DOM4_API_FIND__ = true;
 
-//TODO::
 //]
 
 var __GCC__LEGACY_BROWSERS_SUPPORT__ = true;
@@ -152,8 +76,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__ = true;
 	/** @define {boolean} */
 	var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 //]
-
-var __GCC__STRING_LEGACY_DELETE__ = false;
 // [[[|||---=== GCC DEFINES END ===---|||]]]
 
 
@@ -162,17 +84,11 @@ var __GCC__STRING_LEGACY_DELETE__ = false;
 
 
 
-/**
- * @type {Window}
- * @const */
-void function() {
+(function() {
 
-"use strict";
+/** @this {Window} */
 
 var global = this;
-
-/** @const @type {boolean} */
-var DEBUG = __GCC__IS_DEBUG__;
 
 var /** @const */
 	_Object_prototype = Object.prototype
@@ -190,31 +106,26 @@ var /** @const */
     , /** @const */
 	_Array_splice_ = _Array_prototype_.splice
 
-    , /** @type {number} */
-	_browser_msie
-
 	, _String_contains_
 
     , /** @const */
 	_String_split_ = _String_prototype.split
 
-	, _tmp_ = Function.prototype.bind
+	, _tmp_
 
     ,
     /** Use native or unsafe but fast 'bind' for service and performance needs
 	 * Set <native Function#bind> for Opera, FireFox and Safari but for V8 set it to shim function
 	 *  Due in V8 `Function#bind` is slower except when partially applied. An idea from github.com/bestiejs/lodash
-	 * @const
-	 * @param {Object} object
-	 * @param {...} var_args
-	 * @return {Function} */
+	 * @type {function(Object, ...): Function}
+	 */
     _fastUnsafe_Function_bind_ =
 		( // Detect V8 js engine
 			global["opera"] // Opera
 			|| global["attachEvent"] // Opera
-			|| /\n/.test(_tmp_) // FireFox & Safari
+			|| /\n/.test(Function.prototype.bind) // FireFox & Safari
 		)
-		&& _tmp_
+		&& Function.prototype.bind
 		|| function(object, var_args) {
 			var __method = this
 				, args
@@ -233,25 +144,23 @@ var /** @const */
 		}
 
     , /** @const */
-    _hasOwnProperty = _fastUnsafe_Function_bind_.call(Function.prototype.call, _Object_prototype.hasOwnProperty)
+    _hasOwnProperty = _fastUnsafe_Function_bind_.call(Function.prototype.call, _Object_prototype.hasOwnProperty);
 
-    ,
     /**
 	 * Call _function
-	 * @const
 	 * @param {Function} _function function to call
 	 * @param {*} context
 	 * @param {...} var_args
 	 * @return {*} mixed
 	 * @version 2
 	 */
-    _call_function = function(_function, context, var_args) {
+    function _call_function(_function, context, var_args) {
 		// If no callback function or if callback is not a callable function
 		// it will throw TypeError
         return _Function_apply_.call(_function, context, _Array_slice_.call(arguments, 2))
 	}
 
-    , _append = function(obj, ravArgs) {
+var _append = function(obj, ravArgs) {
 		for(var i = 1; i < arguments.length; i++) {
 			var extension = arguments[i];
 			for(var key in extension)
@@ -261,14 +170,14 @@ var /** @const */
 		}
 
 		return obj;
-	}
-    ,
+	};
+
 	/**
 	 * @const
 	 * @param {Object} obj
 	 * @param {boolean=} _allowNull
 	 */
-    _toObject = function(obj, _allowNull) {
+    function _toObject(obj, _allowNull) {
             if( obj == null && !_allowNull ) { // this matches both null and undefined
                 throwTypeError("invalid object");
             }
@@ -276,7 +185,7 @@ var /** @const */
             return Object(obj);
         }
 
-    , /** @const */
+var /** @const */
     _toString_ = _Object_prototype.toString
 
     , /** @const */
@@ -287,7 +196,7 @@ var /** @const */
 		throw ex;
 	}
 
-    , /** @const @constructor */
+    ,
 	emptyFunction = function() {}
 
     , /** @type {(Function|undefined)} */
@@ -403,9 +312,6 @@ var /** @const */
 
     , _Shimed_Date_dayFromMonth
 
-	// ------------------------------ ==================  __GCC__INCLUDE_EXTRAS__  ================== ------------------------------
-    , browser
-
     , _nodesRecursivelyWalk
 
     , /** @type {string} Space separator list of labelable element names */
@@ -418,30 +324,7 @@ var /** @const */
 	, throwTypeError = function(msg) {
 		//silence
 	}
-
-	, _Object_isPlainObject = function(object) {
-		return object && _toString_.call(object) === "[object Object]";// test with Object.prototype.toString
-	}
 ;
-
-
-//Browser sniffing :) START
-if(__GCC__INCLUDE_EXTRAS__ && __GCC__INCLUDE_EXTRAS__BROWSER__) {
-	browser = {};
-	/** @type {Array}
-	 * @const */
-	browser["names"] = (browser["agent"] = global.navigator.userAgent.toLowerCase()).match(/(mozilla|compatible|chrome|webkit|safari|opera|msie|iphone|ipod|ipad)/gi);
-
-	_tmp_ = browser["names"] && browser["names"].length || 0;
-	while(_tmp_-- > 0)browser[browser["names"][_tmp_]] = true;
-
-	browser["mozilla"] = browser["mozilla"] && !browser["compatible"] && !browser["webkit"];
-	browser["safari"] = browser["safari"] && !browser["chrome"];
-	browser["msie"] = browser["msie"] && !browser["opera"];
-
-	global["browser"] = browser;//Export
-}//if(__GCC__INCLUDE_EXTRAS__)
-//Browser sniffing :) END
 
 
 
@@ -453,86 +336,6 @@ if( !global["HTMLDocument"] ) {
 if( !document["head"] ) {
 	document["head"] = document.getElementsByTagName("HEAD")[0];
 }
-
-
-if(__GCC__INCLUDE_EXTRAS__) {
-/*  =======================================================================================  */
-/*  ======================================  Object extras  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
-if(__GCC__INCLUDE_EXTRAS__OBJECT_APPEND__) {
-/**
- * Object.append
- * Merge the contents of two or more objects together into the first object.
- * This function does not overwrite existing properties
- * @param {Object} obj Object to extend
- * @param {...} ravArgs extentions
- * @return {Object} the same object as `obj`
- */
-Object["append"] = _append;
-}
-
-if(__GCC__INCLUDE_EXTRAS__OBJECT_EXTEND__) {
-/**
- * Object.extend
- * Merge the contents of two or more objects together into the first object.
- * This function overwrite existing properties
- * @param {Object} obj Object to extend
- * @param {...} ravArgs extentions
- * @return {Object} the same object as `obj`
- */
-if(!Object["extend"])Object["extend"] = function(obj, ravArgs) {
-	var i = 1
-		, l = arguments.length
-		, extension
-	;
-	for( ; i < l; i++) {
-		if(extension = arguments[i]) {
-			for(var key in extension) {
-				if(_hasOwnProperty(extension, key)) {
-					obj[key] = extension[key];
-				}
-			}
-		}
-	}
-
-	return obj;
-};
-}
-
-if(__GCC__INCLUDE_EXTRAS__OBJECT_INHERITS__) {
-
-/**
- * Object.inherits
- * Inherits one Child 'class' (function) from Parent 'class' (function). Note: you need to apply Parent constructor in Child constructor manualy (<class>.superclass.constructor.apply(this, <arguments>))
- * @requires Object.create, Object.getOwnPropertyDescriptors
- * @param {Function} Child
- * @param {Function} Parent
- *
- * Example:
- *  function A() { this.message = "World!"; this.subject = "Hello" };A.prototype.say = function() { alert(this.subject + " " + this.message) }
- *  function B() { B.superclass.call(this); this.message = "Classical inheritance!" }
- *  Object["inherits"](B, A);
- *  test = new B;
- *  test.say();
- */
-Object["inherits"] = function(Child, Parent) {
-	Child.prototype = Object.create(
-		(Child["superclass"] = Parent).prototype
-		, Child.prototype && Object["getOwnPropertyDescriptors"](Child.prototype) || void 0
-	);
-};
-}
-
-/**
- * Object.isPlainObject
- * need this method in Function.prototype.bind polyfill
- * Non-standart
- * */
-if(!Object["isPlainObject"])Object["isPlainObject"] = _Object_isPlainObject;
-
-/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Object extras  ======================================  */
-/*  =======================================================================================  */
-}//if(__GCC__INCLUDE_EXTRAS__)
 
 
 
@@ -575,7 +378,7 @@ if(__GCC__ECMA_SCRIPT5__) {
 if(!Function.prototype.bind)Function.prototype.bind = function (object, var_args) {
 	//If IsCallable(Target) is false, throw a TypeError exception.
 	if ( typeof this != "function" ) {
-		if( _browser_msie ? !(this && "apply" in this) : _String_trim_.call(this + "").indexOf("function") !== 0 ) {
+		if(_String_trim_.call(this + "").indexOf("function") !== 0 ) {
 			throwTypeError("Function.prototype.bind called on incompatible " + this);
 		}
 	}
@@ -584,6 +387,11 @@ if(!Function.prototype.bind)Function.prototype.bind = function (object, var_args
 		, args
 		, _result
 	;
+
+
+	var _Object_isPlainObject = function(object) {
+		return object && _toString_.call(object) === "[object Object]";// test with Object.prototype.toString
+	};
 
 	if( arguments.length > 1 ) {
 		args = _Array_slice_.call(arguments, 1);
@@ -984,7 +792,7 @@ if( !Object.defineProperty || definePropertyFallback ) {
         }
 
         // If it's a data property.
-        if( descriptor["value"] !== void 0 ) {
+        if( descriptor["value"] !== undefined ) {
             // fail silently if "writable", "enumerable", or "configurable"
             // are requested but not supported
             /*
@@ -1029,9 +837,9 @@ if( !Object.defineProperty || definePropertyFallback ) {
 			}
 			else {
 				// If we got that far then getters and setters can be defined !!
-				if(descriptor["get"] !== void 0)
+				if(descriptor["get"] !== undefined)
 					object.__defineGetter__(property, descriptor["get"]);
-				if(descriptor["set"] !== void 0)
+				if(descriptor["set"] !== undefined)
 					object.__defineSetter__(property, descriptor["set"]);
 			}
         }
@@ -1096,7 +904,7 @@ if( !Object.getOwnPropertyDescriptor || getOwnPropertyDescriptorFallback ) {
 
         // If object does not owns property return undefined immediately.
         if( !_hasOwnProperty(object, property) ) {
-            return void 0;
+            return undefined;
         }
 
         // If object has a property then it's for sure both `enumerable` and
@@ -1156,7 +964,7 @@ if( !Object["getPropertyDescriptor"] || getOwnPropertyDescriptorFallback ) {
          * Object.getPropertyDescriptor
          * Returns a property descriptor of the specified object, including object’s prototype chain
          * @param {Object} object
-         * @param {String} name - The name of the property
+         * @param {string} name - The name of the property
          * @requires Object.getOwnPropertyDescriptor, Object.getPrototypeOf
          * @throws {TypeError}
          * @return {Object}
@@ -1390,7 +1198,7 @@ if( [1,2].splice(0).length !== 2 ) {
 	_Array_prototype_.splice = function(start, deleteCount) {
         if(!arguments.length)return [];
 
-		if(arguments[0] == void 0/*undefined or null*/)arguments[0] = 0;
+		if(arguments[0] == undefined/*undefined or null*/)arguments[0] = 0;
 		if(arguments.length === 1)arguments[1] = this.length - arguments[0];
 
 		return _Array_splice_.apply(this, arguments);
@@ -1515,7 +1323,7 @@ array_find_or_findIndex = _Array_prototype_["find"] && _Array_prototype_["findIn
             }
         }
 
-        return _option_findIndex ? -1 : void 0;
+        return _option_findIndex ? -1 : undefined;
     }
 ;
 
@@ -1621,7 +1429,7 @@ array_some_or_every = _Array_prototype_.every && _Array_prototype_.some ?
 	null
 	:
 	function(callback, thisObject, _option_isAll) {
-		if(_option_isAll === void 0)_option_isAll = true;//Default value = true
+		if(_option_isAll === undefined)_option_isAll = true;//Default value = true
 
         // ES5 : "If IsCallable(callbackfn) is false, throw a TypeError exception." in "_call_function" function
 
@@ -1668,13 +1476,13 @@ _append(_Array_prototype_, /** @lends {Array.prototype} */{
 			throwTypeError("Array length is 0 and no second argument");
 		}
 
-		if(initialValue === void 0) {
+		if(initialValue === undefined) {
 			initialValue = (++i, thisArray[0]);
 		}
 
 		for( ; i < l ; ++i ) {
 			if( i in thisArray ) {
-				initialValue = _call_function(accumulator, void 0, initialValue, thisArray[i], i, this);
+				initialValue = _call_function(accumulator, undefined, initialValue, thisArray[i], i, this);
 			}
 		}
 
@@ -1711,13 +1519,13 @@ _append(_Array_prototype_, /** @lends {Array.prototype} */{
 		}
 
 		--l;
-		if(initialValue === void 0) {
+		if(initialValue === undefined) {
 			initialValue = (--l, thisArray[l + 1]);
 		}
 
 		for( ; l >= 0 ; --l ) {
 			if( l in thisArray ) {
-				initialValue = _call_function(accumulator, void 0, initialValue, thisArray[l], l, this);
+				initialValue = _call_function(accumulator, undefined, initialValue, thisArray[l], l, this);
 			}
 		}
 
@@ -1820,7 +1628,7 @@ _append(_Array_prototype_, /** @lends {Array.prototype} */{
 		if( !length )return -1;
 
 		i = length - 1;
-		if( fromIndex !== void 0 ) {
+		if( fromIndex !== undefined ) {
 			i = Math.min(i, Number["toInteger"](fromIndex));
 		}
 
@@ -1873,7 +1681,7 @@ _append(_Array_prototype_, /** @lends {Array.prototype} */{
 	 * Creates a new array with all elements that pass the test implemented by the provided function.
 	 * @param {Function} callback Function to test each element of the array.
 	 * @param {Object=} thisObject Object to use as this when executing callback.
-	 * @return {boolean}
+	 * @return {Array}
 	 */
 	filter: function(callback, thisObject) {
 		// ES5 : "If IsCallable(callback) is false, throw a TypeError exception." in "_call_function" function
@@ -1921,52 +1729,6 @@ if(__GCC__ECMA_SCRIPT5__ && __GCC__ECMA_SCRIPT5_GENERIC_ARRAY_METHODS__) {
 
 }//if(__GCC__ECMA_SCRIPT5__ && __GCC__ECMA_SCRIPT5_GENERIC_ARRAY_METHODS__)
 }//if __GCC__ECMA_SCRIPT5__
-
-if(__GCC__INCLUDE_EXTRAS__ && __GCC__INCLUDE_EXTRAS__ARRAY_PROTOTYPE_UNIQUE__) {
-
-/**
- * __Non-standard method__ [(!!!)]
- * https://gist.github.com/1044540
- * Create a new Array with the all unique items
- * @return {Array}
- */
-if(!_Array_prototype_["unique"])_Array_prototype_["unique"] = (function(a) {
-  return function() {     // with a function that
-	return this.filter(a);// filters by the cached function
-  }
-})(
-  function(a,b,c) {       // which
-	return c.indexOf(     // finds out whether the array contains
-	  a,                  // the item
-	  b + 1               // after the current index
-	) <	0                 // and returns false if it does.
-  }
-);
-
-}//if(__GCC__INCLUDE_EXTRAS__)
-
-/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Array.prototype  ==================================  */
-/*  ======================================================================================  */
-
-/*  ============================================================================  */
-/*  ================================  String  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-if(__GCC__INCLUDE_EXTRAS__ && __GCC__INCLUDE_EXTRAS__STRING_RANDOM__) {
-
-/**
- * Random string
- * https://gist.github.com/973263
- * @param {!number} length Length of result string
- * @return {string}
- */
-if(!String["random"])String["random"] = function(length) {
-	if(!length || length < 0)return "";
-
-	return (new Array(++length)).join(0).replace(/./g,function() {
-		return(0 | Math.random() * 32).toString(32)
-	});
-};
-
-}//if(__GCC__INCLUDE_EXTRAS__)
 
 
 /*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  String  ==================================  */
@@ -2026,9 +1788,9 @@ if(__GCC__SCRIPT_BUGFIXING__ && __GCC__SCRIPT_BUGFIXING_STRING_PROTOTYPE_SPLIT__
 // [bugfix, chrome]
 // If separator is undefined, then the result array contains just one String, which is the this value (converted to a String). If limit is not undefined, then the output array is truncated so that it contains no more than limit elements.
 // "0".split(undefined, 0) -> []
-if( "0".split(void 0, 0).length ) {
+if( "0".split(undefined, 0).length ) {
 	_String_prototype.split = function(separator, limit) {
-		if(separator === void 0 && limit === 0)return [];
+		if(separator === undefined && limit === 0)return [];
 		return _String_split_.call(this, separator, limit);
 	}
 }
@@ -2050,7 +1812,7 @@ _append(_String_prototype, /** @lends {String.prototype} */{
 	 * @param {!number} count repeat times
 	 * @return {string} result
 	 *
-	 * @edition ECMA-262 6th Edition, 15.5.4.21
+	 * edition ECMA-262 6th Edition, 15.5.4.21
 	 */
 	"repeat" : function(count) {
 		if( (count = Number["toInteger"](count) ) < 0)return "";
@@ -2080,7 +1842,7 @@ _append(_String_prototype, /** @lends {String.prototype} */{
 	 * @param {number=} fromIndex start the startsWith check at that position
 	 * @return {boolean}
 	 *
-	 * @edition ECMA-262 6th Edition, 15.5.4.22
+	 * edition ECMA-262 6th Edition, 15.5.4.22
 	 *
 	 * @example:
 	 *
@@ -2111,12 +1873,12 @@ _append(_String_prototype, /** @lends {String.prototype} */{
 	 * @param {number=} fromIndex end the endsWith check at that position
 	 * @return {boolean}
 	 *
-	 * @edition ECMA-262 6th Edition, 15.5.4.23
+	 * edition ECMA-262 6th Edition, 15.5.4.23
 	 */
     "endsWith" : function(substring, fromIndex) {
 		var strLen = this.length;
 
-		if( fromIndex === void 0 )fromIndex = strLen;
+		if( fromIndex === undefined )fromIndex = strLen;
 
 		fromIndex = +fromIndex;
 
@@ -2145,7 +1907,7 @@ _append(_String_prototype, /** @lends {String.prototype} */{
 	 * @param {number=} fromIndex start the contains check at that position
 	 * @return {boolean}
 	 *
-	 * @edition ECMA-262 6th Edition, 15.5.4.24
+	 * edition ECMA-262 6th Edition, 15.5.4.24
 	 */
     "contains" : _String_contains_
 
@@ -2176,14 +1938,14 @@ _append(_String_prototype, /** @lends {String.prototype} */{
     ,
     /**
      * String.prototype.codePointAt
-     * @param {Number | String} index - position
-     * @return {Number} Number (a nonnegative integer less than 1114112)
+     * @param {number | string} index - position
+     * @return {number} Number (a nonnegative integer less than 1114112)
      * that is the UTF-16 encode code point value starting at the string element at position (index)
      * in the String resulting from converting this object to a String.
      * If there is no element at that position, the result is NaN.
      * If a valid UTF-16 sudsarrogate pair does not begin at position,
      * the result is the code unit at position (including code points above 0xFFFF).
-     * @edition ECMA-262 6th Edition, 15.5.4.5
+     * edition ECMA-262 6th Edition, 15.5.4.5
      *
      * @example:
      *
@@ -2219,10 +1981,10 @@ _append(_String_prototype, /** @lends {String.prototype} */{
 
 /**
  * String.fromCodePoint
- * @edition ECMA-262 6th Edition, 15.5.3.3
+ * edition ECMA-262 6th Edition, 15.5.3.3
  *
- * @param {...(Number|String)} codePoints code points
- * @return {String} Return the string value whose elements are, in order, the elements
+ * @param {...(number|string)} codePoints code points
+ * @return {string} Return the string value whose elements are, in order, the elements
  * in the List elements. If length is 0, the empty string is returned.	 *
  * @throws {RangeError}
  *
@@ -2342,19 +2104,6 @@ _append(Number, /** @lends {Number} */{
 });
 }//if __GCC__ECMA_SCRIPT6__
 
-if( __GCC__INCLUDE_EXTRAS__ ) {
-    /**
-     * Number.isNumeric
-     * @param value
-     * @return {boolean}
-     */
-	Number["isNumeric"] = function(value) { // Non-standard
-		//http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric/174921#answer-1830844
-		//http://dl.getdropbox.com/u/35146/js/tests/isNumber.html
-		return !global["isNaN"](global["parseFloat"](value)) && global["isFinite"](value);
-	}
-}
-
 /*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Number  ==================================  */
 /*  ======================================================================================  */
 
@@ -2378,7 +2127,7 @@ var EBVS = {
     , /** @const */IS_NEG_ONE_RETURN_NEG_INFINITY: 2048
 };
 
-!function() {
+(function() {
 
     function examValue(value, bitmap) {
         if( Number["isNaN"](value)
@@ -2419,7 +2168,7 @@ var EBVS = {
     _append(global["Math"], {
         /**
          * Math.acosh
-		 * @edition ECMA-262 6th Edition, 15.8.2.26
+		 * edition ECMA-262 6th Edition, 15.8.2.26
 		 *
 		 * Returns an implementation-dependent approximation to the inverse hyperbolic cosine of <value>
 		 *
@@ -2443,7 +2192,7 @@ var EBVS = {
         ,
         /**
          * Math.asinh
-		 * @edition ECMA-262 6th Edition, 15.8.2.27
+		 * edition ECMA-262 6th Edition, 15.8.2.27
 		 *
 		 * Returns an implementation-dependent approximation to the inverse hyperbolic sine of <value>
 		 *
@@ -2463,7 +2212,7 @@ var EBVS = {
         ,
         /**
          * Math.atanh
-		 * @edition ECMA-262 6th Edition, 15.8.2.28
+		 * edition ECMA-262 6th Edition, 15.8.2.28
 		 *
 		 * Returns an implementation-dependent approximation to the inverse hyperbolic tangent of <value>
 		 *
@@ -2486,7 +2235,7 @@ var EBVS = {
         ,
         /**
          * Math.cbrt
-		 * @edition ECMA-262 6th Edition, 15.8.2.32
+		 * edition ECMA-262 6th Edition, 15.8.2.32
 		 *
 		 * Returns an implementation-dependent approximation to the cube root of <value>
 		 *
@@ -2511,7 +2260,7 @@ var EBVS = {
         ,
         /**
          * Math.cosh
-		 * @edition ECMA-262 6th Edition, 15.8.2.23
+		 * edition ECMA-262 6th Edition, 15.8.2.23
 		 *
 		 * Returns an implementation-dependent approximation to the hyperbolic cosine of <value>
 		 *
@@ -2542,7 +2291,7 @@ var EBVS = {
 		 * from http://www.johndcook.com/cpp_expm1.html
 		 *
          * Math.expm1
-		 * @edition ECMA-262 6th Edition, 15.8.2.22
+		 * edition ECMA-262 6th Edition, 15.8.2.22
 		 *
 		 * Returns an implementation-dependent approximation to subtracting 1
 		 * from the exponential function of <value> The result is computed in a way
@@ -2573,7 +2322,7 @@ var EBVS = {
         ,
         /**
          * Math.hypot
-		 * @edition ECMA-262 6th Edition, 15.8.2.29
+		 * edition ECMA-262 6th Edition, 15.8.2.29
 		 *
 		 * Given two or three arguments, hypot returns an implementation-dependent approximation
 		 * of the square root of the sum of squares of its arguments.
@@ -2605,7 +2354,7 @@ var EBVS = {
         ,
         /**
          * Math.log2
-		 * @edition ECMA-262 6th Edition, 15.8.2.20
+		 * edition ECMA-262 6th Edition, 15.8.2.20
 		 *
 		 * Returns an implementation-dependent approximation to the base 2 logarithm of <value>
 		 *
@@ -2629,7 +2378,7 @@ var EBVS = {
         ,
         /**
          * Math.log10
-		 * @edition ECMA-262 6th Edition, 15.8.2.19
+		 * edition ECMA-262 6th Edition, 15.8.2.19
 		 *
 		 * Returns an implementation-dependent approximation to the base 10 logarithm of <value>
 		 *
@@ -2655,7 +2404,7 @@ var EBVS = {
          * from http://www.johndcook.com/cpp_log_one_plus_x.html
 		 *
 		 * Math.log1p
-		 * @edition ECMA-262 6th Edition, 15.8.2.21
+		 * edition ECMA-262 6th Edition, 15.8.2.21
 		 *
 		 * Returns an implementation-dependent approximation to the natural logarithm of 1 + <value>.
 		 * The result is computed in a way that is accurate even when the value of <value> is close to zero.
@@ -2688,7 +2437,7 @@ var EBVS = {
         ,
         /**
          * Math.sign
-		 * @edition ECMA-262 6th Edition, 15.8.2.31
+		 * edition ECMA-262 6th Edition, 15.8.2.31
 		 *
 		 * Returns the sign of the <value>, indicating whether <value> is positive, negative or zero
 		 *
@@ -2713,7 +2462,7 @@ var EBVS = {
         ,
         /**
          * Math.sinh
-		 * @edition ECMA-262 6th Edition, 15.8.2.24
+		 * edition ECMA-262 6th Edition, 15.8.2.24
 		 *
 		 * Returns an implementation-dependent approximation to the hyperbolic sine of <value>
 		 *
@@ -2733,7 +2482,7 @@ var EBVS = {
         ,
         /**
          * Math.tanh
-		 * @edition ECMA-262 6th Edition, 15.8.2.25
+		 * edition ECMA-262 6th Edition, 15.8.2.25
 		 *
 		 * Returns an implementation-dependent approximation to the hyperbolic tangent of <value>
 		 *
@@ -2763,7 +2512,7 @@ var EBVS = {
         ,
         /**
          * Math.trunc
-		 * @edition ECMA-262 6th Edition, 15.8.2.30
+		 * edition ECMA-262 6th Edition, 15.8.2.30
 		 *
 		 * Returns the integral part of the number <value>, removing any fractional digits.
 		 * If <value> is already an integer, the result is <value>
@@ -2806,7 +2555,7 @@ var EBVS = {
 		}
     });
 
-}();
+})();
 }//if( __GCC__ECMA_SCRIPT6__ && __GCC__ECMA_SCRIPT6_MATH__ )
 /*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Math  ========================================  */
 /*  ======================================================================================  */
@@ -2871,7 +2620,7 @@ if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL_DOM_EVENTS_LVL3__) {
 		}
 
 		dict = dict || {};
-		_detail = dict.detail !== void 0 ? dict.detail : null;
+		_detail = dict.detail !== undefined ? dict.detail : null;
 		(e.initCustomEvent || (e.detail = _detail, e.initEvent)).call
 			(e, type, dict.bubbles || false, dict.cancelable || false, _detail);
 		if(!("isTrusted" in e))e.isTrusted = false;
@@ -2996,7 +2745,7 @@ if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_
 
 									listener = implementation_stopImmediatePropagation ? (
 										_[_eventsUUID] = _fastUnsafe_Function_bind_.call(implementation_stopImmediatePropagation, {_listener : listener, _this : this})
-									) : (_[_eventsUUID] = void 0), listener;
+									) : (_[_eventsUUID] = undefined), listener;
 								}
 
 								return old_addEventListener.call(this, type, listener, useCapture);
@@ -3028,10 +2777,6 @@ if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_
 	}
 }
 
-if(DEBUG && !document.addEventListener) {
-	console.error("[add|remove]EventListener not supported")
-}
-
 /*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Events  ======================================  */
 /*  ======================================================================================  */
 
@@ -3040,7 +2785,7 @@ if(DEBUG && !document.addEventListener) {
 /*  =======================================================================================  */
 /*  =================================  Utils.Dom  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
-if(__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__ || __GCC__INCLUDE_EXTRAS__DOMSTRINGCOLLECTION__)) {
+if(__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__)) {
 /**
  * DOMStringCollection
  * DOMSettableTokenList like object
@@ -3215,11 +2960,7 @@ DOMStringCollection.prototype.toString = function() {//_append function do not o
 
 	return this["value"] || ""
 };
-}//if(__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__ || __GCC__INCLUDE_EXTRAS__DOMSTRINGCOLLECTION__))
-
-if(__GCC__INCLUDE_EXTRAS__ && __GCC__INCLUDE_EXTRAS__DOMSTRINGCOLLECTION__) {//Export DOMStringCollection
-	global["DOMStringCollection"] = DOMStringCollection;
-}
+}//if(__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__))
 
 
 /*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Utils.Dom  ==================================  */
@@ -3270,7 +3011,7 @@ if( global.getComputedStyle ) {
 if(__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__ || __GCC__DOM_API_POLYFILL_CLASSLIST_FIX__)) {
 
 _tmp_ = !("classList" in _testElement) ?
-	void 0//doesn't support classList
+	undefined//doesn't support classList
 	:
 	(_testElement["classList"]["add"](1, 2), _testElement["classList"]["contains"](2)) && true || false//false - support old version of classList
 ;
@@ -3279,7 +3020,7 @@ _tmp_ = !("classList" in _testElement) ?
 //Add JS 1.8 Element property classList
 if( !_tmp_ ) {
 	if( __GCC__DOM_API_POLYFILL_CLASSLIST__
-        && _tmp_ === void 0
+        && _tmp_ === undefined
     ) {
         S_ELEMENT_CACHED_CLASSLIST_NAME = "_ccl_";
 
@@ -3292,7 +3033,7 @@ if( !_tmp_ ) {
 
 		Object.defineProperty(_Element_prototype, "classList", {
 			"get": function() {
-				if(!this.tagName)return void 0;
+				if(!this.tagName)return undefined;
 
 				var thisObj = this,
 					cont = thisObj["_"] || (thisObj["_"] = {});//Put S_ELEMENT_CACHED_CLASSLIST_NAME in container "_";
@@ -3409,7 +3150,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 		var thisObj = this,
 			elTag = thisObj.tagName;
 
-		return thisObj.tagName.toUpperCase() == "TIME" ? (thisObj.getAttribute("datetime") || "") : void 0;
+		return thisObj.tagName.toUpperCase() == "TIME" ? (thisObj.getAttribute("datetime") || "") : undefined;
 	},
 	"set" : function(val) {
 		var thisObj = this,
@@ -3439,7 +3180,7 @@ try {
 	var importNode = document.importNode;
 	delete document.importNode;
 	document.importNode = function (node, bool) {
-		if (bool === void 0) {
+		if (bool === undefined) {
 			bool = true;
 		}
 		return importNode.call(this, node, bool);
@@ -3466,7 +3207,7 @@ try {
 				var cloneNode = proto.cloneNode;
 				delete proto.cloneNode;
 				proto.cloneNode = function _cloneNode(bool) {
-					if (bool === void 0) {
+					if (bool === undefined) {
 						bool = true;
 					}
 					return cloneNode.call(this, bool);
@@ -3503,7 +3244,7 @@ if(!_Element_prototype.matchesSelector) {
 				}
 				else {
 					thisObj = refNodes;
-					refNodes = void 0;
+					refNodes = undefined;
 				}
 			}
 			else thisObj = this;
@@ -3842,7 +3583,7 @@ if( __GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__LABELS_AND_CONTROL_POL
 			enumerable: true,
 			"get": function() {
 				if( !(_String_contains_.call(_labelable_elements, (" " + this.nodeName + " ").toUpperCase())) ) {
-                    return void 0;
+                    return undefined;
                 }
 
 				var node = this
@@ -3915,7 +3656,7 @@ if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__LABELS_AND_CONTROL_POLY
 			enumerable: true,
 			"get" : function() {
 				if(this.nodeName.toUpperCase() !== "LABEL")
-					return void 0;
+					return undefined;
 
 				if(this.hasAttribute("for"))
 					return document.getElementById(this.htmlFor);
@@ -4002,7 +3743,7 @@ if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__REVERSE_POLYFILL__ && !
 		"get": function () {
 			var thisObj = this;
 
-			if((thisObj.nodeName || "").toUpperCase() !== "OL")return void 0;
+			if((thisObj.nodeName || "").toUpperCase() !== "OL")return undefined;
 
 			return thisObj.getAttribute('reversed') !== null;
 		}
@@ -4011,7 +3752,7 @@ if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__REVERSE_POLYFILL__ && !
 		"set": function (value) {
 			var thisObj = this;
 
-			if((thisObj.nodeName || "").toUpperCase() !== "OL")return void 0;
+			if((thisObj.nodeName || "").toUpperCase() !== "OL")return undefined;
 
 			thisObj[(value ? "set" : "remove") + "Attribute"]('reversed', "");
 
@@ -4140,7 +3881,7 @@ if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL_DOM4_API__ && __GCC__DOM
                         }
                     }
 
-                    return void 0;
+                    return undefined;
                 },
                 set: function(value) {
 					var k = this.length
@@ -4163,7 +3904,7 @@ if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL_DOM4_API__ && __GCC__DOM
                         }
                     }
 
-                    return void 0;
+                    return undefined;
                 },
                 configurable: true
             });
@@ -4423,80 +4164,7 @@ if( !_Native_Date.parse || "Date.parse is buggy" ) {
 
 
 /*  =======================================================================================  */
-/*  ========================================  DEBUG  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
-if(DEBUG) {
-// friendly console
-// http://habrahabr.ru/blogs/javascript/116852/
-// https://github.com/theshock/console-cap/blob/master/console.js
-// 21.02.2012 Update with CHANGES!!!
-(function (console) {
-
-var i,
-	methods = ['assert','count','debug','dir','dirxml','error','group','groupCollapsed','groupEnd','info','log','markTimeline','profile','profileEnd','table','time','timeEnd','trace','warn'],
-	empty   = {},
-	timeCounters,
-    functionReturnFirstParam = function(param) { return param }
-    ;
-
-for (i = methods.length; i--;) empty[methods[i]] = functionReturnFirstParam;
-
-if (console) {
-
-	if (!console.time) {
-		timeCounters = {};
-
-		console.time = function(name, reset){
-			if (name) {
-				var time = +new Date, key = "KEY" + name.toString();
-				if (reset || !timeCounters[key]) timeCounters[key] = time;
-			}
-		};
-
-		console.timeEnd = function(name){
-			var diff,
-				time = +new Date,
-				key = "KEY" + name.toString(),
-				timeCounter = timeCounters[key];
-
-			if (timeCounter) {
-				diff  = time - timeCounter;
-				console.info( name + ": " + diff + "ms" );
-				delete timeCounters[key];
-			}
-			return diff;
-		};
-	}
-
-	for (i = methods.length; i--;) {
-		console[methods[i]] = methods[i] in console ?
-			_fastUnsafe_Function_bind_.call(console[methods[i]], console) : functionReturnFirstParam;
-	}
-	console.disable = function () { global.console = empty;   };
-	  empty.enable  = function () { global.console = console; };
-
-	empty.disable = console.enable = functionReturnFirstParam;
-
-} else {
-	console = global.console = empty;
-	console.disable = console.enable = functionReturnFirstParam;
-}
-
-methods = void 0;
-
-})( typeof console === 'undefined' ? null : console );
-
-}//if(DEBUG)
-
-
-/*  =======================================================================================  */
 /*  ========================================  Delete section  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
-if(__GCC__STRING_LEGACY_DELETE__) {
-	_Array_forEach_.call(["anchor", "big", "blink", "bold", "fixed", "fontcolor", "fontsize", "italics", "link", "small", "strike", "sub", "sup"], function(name) {
-		delete this[name];
-	}, _String_prototype);
-}
 
 // cleanup, no need this any more
 _append = _tmp_ = _testElement = _document_createElement = _Array_prototype_ = _String_prototype =
@@ -4507,4 +4175,4 @@ throwTypeError = function(msg) {
 	throw new TypeError(msg)
 };
 
-}.call(window);
+}).call(window);
