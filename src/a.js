@@ -1057,24 +1057,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				// isNaN("foo") => true
 				return x !== x && y !== y;
 			}
-
-			,
-			/**
-			 * 15.2.3.18
-			 * Object.mixin
-			 * @requires Object.getOwnPropertyNames, Object.defineProperty, Object.getOwnPropertyDescriptor, Array.prototype.reduce
-			 * @param {Object} target
-			 * @param {Object} source
-			 * @return {Object}
-			 */
-			"mixin": function (target, source) {
-				target = _toObject(target);
-				source = _toObject(source);
-
-				return Object.getOwnPropertyNames(source).reduce(function (target, property) {
-					return Object.defineProperty(target, property, Object.getOwnPropertyDescriptor(source, property));
-				}, target);
-			}
 		});
 
 	}//if( __GCC__ECMA_SCRIPT6__ )
