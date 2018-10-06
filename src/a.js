@@ -11,19 +11,16 @@
 /**
  * TODO::
  * 0. eng comments
- * 1. HTMLCanvasElement.toBlob (https://developer.mozilla.org/en/DOM/HTMLCanvasElement | http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata#answer-5100158)
- * 2. dateTime prop for IE < 8
- * 3. offset[Top/Left/Width/Height] for IE from https://raw.github.com/yui/yui3/master/src/dom/js/dom-style-ie.js
- * 4. MutationObserver http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/
+ * 2. HTMLCanvasElement.toBlob (https://developer.mozilla.org/en/DOM/HTMLCanvasElement | http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata#answer-5100158)
+ * 3. MutationObserver http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/
  *                     http://updates.html5rocks.com/2012/02/Detect-DOM-changes-with-Mutation-Observers
- * 5. Web Animation API https://dvcs.w3.org/hg/FXTF/raw-file/tip/web-anim/index.html
- * 6. window.innerWidth for IE < 9 https://developer.mozilla.org/en/DOM/window.innerWidth
- * 7. http://dev.w3.org/csswg/selectors4/ querySelector[All] shim
- * 8. http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseenter and http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseleave for standards-compliant browsers:
+ * 4. Web Animation API https://dvcs.w3.org/hg/FXTF/raw-file/tip/web-anim/index.html
+ * 5. http://dev.w3.org/csswg/selectors4/ querySelector[All] shim
+ * 6. http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseenter and http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseleave for standards-compliant browsers:
  *   i) https://gist.github.com/3153964
  *   ii) http://blog.stchur.com/2007/03/15/mouseenter-and-mouseleave-events-for-firefox-and-other-non-ie-browsers/
  *   iii) https://developer.mozilla.org/en-US/docs/DOM/DOM_event_reference/mouseleave | https://developer.mozilla.org/en-US/docs/DOM/DOM_event_reference/mouseenter
- * 9. https://bugzilla.mozilla.org/show_bug.cgi?id=486002 (Node.compareDocumentPosition returns spurious preceding|following bits for disconnected nodes) :: https://bugzilla.mozilla.org/attachment.cgi?id=671404&action=diff
+ * 7. https://bugzilla.mozilla.org/show_bug.cgi?id=486002 (Node.compareDocumentPosition returns spurious preceding|following bits for disconnected nodes) :: https://bugzilla.mozilla.org/attachment.cgi?id=671404&action=diff
  */
 
 
@@ -153,8 +150,6 @@ var __GCC__DOM_API_POLYFILL__ = true;
 var __GCC__LEGACY_BROWSERS_SUPPORT__ = true;
 //IF __GCC__LEGACY_BROWSERS_SUPPORT__ == true [
 	/** @define {boolean} */
-	var __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ = true;
-	/** @define {boolean} */
 	var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 //]
 
@@ -179,8 +174,6 @@ var global = this;
 /** @const @type {boolean} */
 var DEBUG = __GCC__IS_DEBUG__;
 
-var _ = __GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ && global["_"];
-
 var /** @const */
 	_Object_prototype = Object.prototype
 
@@ -189,8 +182,7 @@ var /** @const */
 	, _Array_prototype_ = Array.prototype
 
     , /** @const */
-	_Function_apply_ = __GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ && _ && _["apply"]
-        || Function.prototype.apply
+	_Function_apply_ = Function.prototype.apply
 
     , /** @const */
 	_Array_slice_ = _Array_prototype_.slice
@@ -210,7 +202,7 @@ var /** @const */
 
     ,
     /** Use native or unsafe but fast 'bind' for service and performance needs
-	 * Set <native Function#bind> for IE, Opera, FireFox and Safari but for V8 set it to shim function
+	 * Set <native Function#bind> for Opera, FireFox and Safari but for V8 set it to shim function
 	 *  Due in V8 `Function#bind` is slower except when partially applied. An idea from github.com/bestiejs/lodash
 	 * @const
 	 * @param {Object} object
@@ -219,7 +211,7 @@ var /** @const */
     _fastUnsafe_Function_bind_ =
 		( // Detect V8 js engine
 			global["opera"] // Opera
-			|| global["attachEvent"] // IE & Opera
+			|| global["attachEvent"] // Opera
 			|| /\n/.test(_tmp_) // FireFox & Safari
 		)
 		&& _tmp_
@@ -276,31 +268,7 @@ var /** @const */
 	 * @param {Object} obj
 	 * @param {boolean=} _allowNull
 	 */
-    _toObject =
-        __GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ && (function(strObj) {
-            // Check failure of by-index access of string characters (IE < 9)
-            // and failure of `0 in strObj` (Rhino)
-            return strObj[0] !== "a" || !(0 in strObj);
-        })(Object("a"))
-        ?
-        function(obj, _allowNull) {
-            if( obj == null && !_allowNull ) { // this matches both null and undefined
-                throwTypeError("invalid object");
-            }
-
-            //Fixed `toObject` to work for strings in IE8 and Rhino
-            //https://github.com/kriskowal/es5-shim/pull/94
-            // If the implementation doesn't support by-index access of
-            // string characters (ex. IE < 9), split the string
-			// ( can't using typeof here! )
-            if( obj && ( _toString_.call(obj) === "[object String]" ) ) {
-                return _String_split_.call(obj, "");
-            }
-
-            return Object(obj);
-        }
-        :
-        function(obj, _allowNull) {
+    _toObject = function(obj, _allowNull) {
             if( obj == null && !_allowNull ) { // this matches both null and undefined
                 throwTypeError("invalid object");
             }
@@ -328,7 +296,6 @@ var /** @const */
     , functionReturnFirstParam = function(param) { return param }
 
 	//Take Element.prototype or silently take a fake object
-	// IE < 8 support in a.ielt8.js and a.ielt8.htc
     , _Element_prototype = global["Element"] && global["Element"].prototype || {}
 
 	, _Node_prototype = global["Node"] && global["Node"].prototype || {}
@@ -337,8 +304,7 @@ var /** @const */
     S_ELEMENT_CACHED_CLASSLIST_NAME
 
     , _document_createElement = _fastUnsafe_Function_bind_.call(
-		__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ && document["__orig__createElement__"] ||
-			document.createElement,
+		document.createElement,
 		document
 	)
 
@@ -453,7 +419,7 @@ var /** @const */
 		//silence
 	}
 
-	, _Object_isPlainObject = __GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ && _ && _["isPlainObject"] || function(object) {
+	, _Object_isPlainObject = function(object) {
 		return object && _toString_.call(object) === "[object Object]";// test with Object.prototype.toString
 	}
 ;
@@ -473,21 +439,8 @@ if(__GCC__INCLUDE_EXTRAS__ && __GCC__INCLUDE_EXTRAS__BROWSER__) {
 	browser["safari"] = browser["safari"] && !browser["chrome"];
 	browser["msie"] = browser["msie"] && !browser["opera"];
 
-	if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__) {
-		_browser_msie = browser["msie"] || null;
-	}
-
 	global["browser"] = browser;//Export
 }//if(__GCC__INCLUDE_EXTRAS__)
-else if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__) {
-	_browser_msie = // paranoiac mode
-		"attachEvent" in document
-		&& "all" in document
-		&& "uniqueId" in document.documentElement
-		&& +((/msie (\d+)/i.exec(navigator.userAgent) || [])[1] || 0)
-		|| null
-	;
-}
 //Browser sniffing :) END
 
 
@@ -496,15 +449,6 @@ else if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT
 if( !global["HTMLDocument"] ) {
 	global["HTMLDocument"] = global["Document"];
 }//For IE9
-if( __GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ ) {
-	if( !global["Document"] ) {//For IE8
-		global["Document"] = global["HTMLDocument"];
-	}
-    if( !global["DocumentFragment"] ) {
-		global["DocumentFragment"] = global["HTMLDocument"];
-	}
-}
-//TODO:: for IE < 8 :: if(!global["Document"] && !global["HTMLDocument"])global["Document"] = global["HTMLDocument"] = ??;//for IE < 8
 
 if( !document["head"] ) {
 	document["head"] = document.getElementsByTagName("HEAD")[0];
@@ -1035,17 +979,6 @@ if( !Object.defineProperty || definePropertyFallback ) {
             try {
                 return definePropertyFallback.call(Object, object, property, descriptor);
             } catch (exception) {
-				if( __GCC__LEGACY_BROWSERS_SUPPORT__
-                    && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__
-                    && exception["number"] === -0x7FF5EC54// [ielt9 ie8] IE 8 doesn't support enumerable:true
-                ) {
-					descriptor.enumerable = false;
-					try {
-						return definePropertyFallback.call(Object, object, property, descriptor);
-					} catch (exception2) {
-
-					}
-				}
                 // try the shim if the real one doesn't work
             }
         }
@@ -1092,18 +1025,7 @@ if( !Object.defineProperty || definePropertyFallback ) {
         }
         else {
             if( !object.__defineGetter__ ) {
-                if( __GCC__LEGACY_BROWSERS_SUPPORT__
-                    && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__
-	                && Object.defineProperty["sham"]// [ielt9 ie8]
-                ) {
-					if(descriptor["get"] !== void 0)
-						object["get" + property] = descriptor["get"];
-					if(descriptor["set"] !== void 0)
-						object["set" + property] = descriptor["set"];
-				}
-				else {
-					throwTypeError("getters & setters not supported");
-				}
+				throwTypeError("getters & setters not supported");
 			}
 			else {
 				// If we got that far then getters and setters can be defined !!
@@ -1116,13 +1038,6 @@ if( !Object.defineProperty || definePropertyFallback ) {
 
         return object;
     };
-}
-
-if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ ) {
-	//[ielt8] Set `Object.defineProperty["sham"] = true` for IE < 9
-	if( _Element_prototype["ie"] ) {
-		Object.defineProperty["sham"] = true;
-	}
 }
 
 // ES5 15.2.3.7
@@ -1208,10 +1123,6 @@ if( !Object.getOwnPropertyDescriptor || getOwnPropertyDescriptorFallback ) {
             // Once we have getter and setter we can put values back.
             object.__proto__ = _prototype;
         }
-		else if( __GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__ && Object.defineProperty["sham"] ) {//[ielt9 ie8]
-			getter = object["get" + property];
-			setter = object["set" + property];
-		}
 
 	    if( getter || setter ) {
 			if( getter ) {
@@ -2935,10 +2846,6 @@ if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL_DOM_EVENTS_LVL3__) {
 		if(_Event_prototype) {
 			_Event.prototype = _Event_prototype;
 		}
-		else if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__) {
-			//IE < 8 has no Event.prototype
-			_Event_prototype = _Event.prototype;
-		}
 	}
 
 	// Chrome calling .initEvent on a CustomEvent object is a no-no
@@ -3370,7 +3277,6 @@ _tmp_ = !("classList" in _testElement) ?
 
 //https://developer.mozilla.org/en/DOM/Element.classList
 //Add JS 1.8 Element property classList
-// IE < 8 support in a.ielt8.js and a.ielt8.htc
 if( !_tmp_ ) {
 	if( __GCC__DOM_API_POLYFILL_CLASSLIST__
         && _tmp_ === void 0
@@ -4582,25 +4488,6 @@ methods = void 0;
 
 }//if(DEBUG)
 
-/*  ======================================================================================  */
-/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  DEBUG  =====================================  */
-
-if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__) {
-//apply IE lt 9 shims
-if( _ && _["ielt9shims"] ) {
-    _Array_forEach_.call(_["ielt9shims"], _call_function);
-	//Restore original "_" or set "_" to undefined
-	if( _["orig_"] ) {
-		global["_"] = _["orig_"];
-	}
-    else {
-        try {
-			delete global["_"];
-		}
-		catch(e){}
-    }
-}
-}//if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__)
 
 /*  =======================================================================================  */
 /*  ========================================  Delete section  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
@@ -4609,13 +4496,6 @@ if(__GCC__STRING_LEGACY_DELETE__) {
 	_Array_forEach_.call(["anchor", "big", "blink", "bold", "fixed", "fontcolor", "fontsize", "italics", "link", "small", "strike", "sub", "sup"], function(name) {
 		delete this[name];
 	}, _String_prototype);
-}
-
-/*  ======================================================================================  */
-/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Delete section  =====================================  */
-
-if(__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__IELT9__) {
-	_ = null;
 }
 
 // cleanup, no need this any more
