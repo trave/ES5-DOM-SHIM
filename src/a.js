@@ -1095,18 +1095,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.find
-			 *
-			 * @param {Function} callback Function to test for each element.
-			 * @param {Object=} context Object to use as this when executing callback.
-			 * @return {*}
-			 */
-			"find": function (callback, context) {
-				return array_find_or_findIndex.call(this, callback, context, false);
-			}
-
-			,
-			/**
 			 * Array.prototype.findIndex
 			 *
 			 * @param {Function} callback Function to test for each element.
