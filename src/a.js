@@ -1060,25 +1060,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * 15.2.3.17
-			 * Object.assign
-			 * @requires Object.keys, Array.prototype.reduce
-			 * @param {!Object} target
-			 * @param {!Object} source
-			 * @return {!Object}
-			 */
-			"assign": function (target, source) {
-				target = _toObject(target);//TODO:: do we are realy need _toObject call?
-				source = _toObject(source);
-
-				return Object.keys(source).reduce(function (target, key) {
-					target[key] = source[key];
-					return target;
-				}, target);
-			}
-
-			,
-			/**
 			 * 15.2.3.18
 			 * Object.mixin
 			 * @requires Object.getOwnPropertyNames, Object.defineProperty, Object.getOwnPropertyDescriptor, Array.prototype.reduce
