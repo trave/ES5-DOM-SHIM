@@ -954,88 +954,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  bug fixing  ==================================  */
 
-	/*  ================================ ES6 ==================================  */
-// Based on https://github.com/paulmillr/es6-shim/
-	/**
-	 * speed test: http://jsperf.com/array-from
-	 *
-	 * Array.from
-	 * @param {IArrayLike<T>|Iterable<T>|string} iterable
-	 * @param {function(this:S, (T|string), number): R=} mapFn
-	 * @param {S=} thisObj
-	 * @return {!Array<R>}
-	 * @template T
-	 * @template S
-	 * @template R
-	 */
-	function _Array_from(iterable, mapFn, thisObj) {
-		var isConstructor = typeof this === 'function' && this !== Array;
-
-		if (!isConstructor && mapFn) {
-			return _Array_map_.call(iterable, mapFn, thisObj);
-		}
-
-		var object = _toObject(iterable, true);
-		var len;
-		var result;
-		var key;
-
-		if (!isConstructor) {
-			try {
-				result = _Array_slice_.call(object);
-			}
-			catch (e) {
-				// In IE8 _Array_slice_ can't be applied to NodeList
-				result = null;
-			}
-
-			len = object.length >>> 0;
-			if (result && result.length === len) return result;
-			//else
-			result = new Array(len);
-		}
-		else {
-			len = object.length >>> 0;
-			result = isConstructor && _toObject(new this(len));
-		}
-
-		if (mapFn) {
-			for (key = 0; key < len; key++) {
-				if (key in object) {
-					result[key] = _call_function(mapFn, thisObj, object[key], key, iterable);
-				}
-			}
-		}
-		else {
-			for (key = 0; key < len; key++) {
-				if (key in object) {
-					result[key] = object[key];
-				}
-			}
-		}
-
-		return result;
-	};
-
-	if (__GCC__ECMA_SCRIPT6__) {
-
-		_append(Array, /** @lends {Array} */{
-			/**
-			 * Array.from
-			 * @param {IArrayLike<T>|Iterable<T>|string} iterable
-			 * @param {function(this:S, (T|string), number): R=} mapFn
-			 * @param {S=} thisObj
-			 * @return {!Array<R>}
-			 * @template T
-			 * @template S
-			 * @template R
-			 */
-			"from": _Array_from
-		});
-
-
-	}//if(__GCC__ECMA_SCRIPT6__)
-
 	/*  ================================ ES5 ==================================  */
 // Based on https://github.com/kriskowal/es5-shim
 
@@ -2284,7 +2202,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 					resultNode = document.createDocumentFragment();
 
 					//nodes can be a live NodeList so we can't iterate NodeList directly
-					nodes = _Array_from(nodes);
+					nodes = Array.from(nodes);
 
 					for (i = 0; i < maxLength; ++i) {
 						resultNode.appendChild(nodes[i]);
@@ -2487,7 +2405,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 							}
 						}
 						else {
-							result = _Array_from(tmpResult);
+							result = Array.from(tmpResult);
 						}
 					}
 					while (++i < l);
@@ -2551,7 +2469,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 						 * @type {Array}
 						 */
 						result = this.id ?
-							_Array_from(document.querySelectorAll("label[for='" + this.id + "']"))
+							Array.from(document.querySelectorAll("label[for='" + this.id + "']"))
 							:
 							[]
 
