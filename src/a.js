@@ -1047,18 +1047,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * @template R
 			 */
 			"from": _Array_from
-
-			,
-			/**
-			 * Array.of
-			 * return array of arguments of this function
-			 * @param {...T} args
-			 * @return {!Array<T>}
-			 * @template T
-			 */
-			"of": function (args) {
-				return _Array_from(arguments);
-			}
 		});
 
 		array_find_or_findIndex = _Array_prototype_["find"] && _Array_prototype_["findIndex"] ?
