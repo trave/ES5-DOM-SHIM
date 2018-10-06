@@ -1495,43 +1495,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 		_append(_String_prototype, /** @lends {String.prototype} */{
 			/**
-			 * speed test: http://jsperf.com/starts-ends-with
-			 *
-			 * http://jsperf.com/starts-ends-with
-			 * String.prototype.endsWith
-			 * Check if given string locate at the end of current string
-			 * @param {string} substring substring to locate in the current string.
-			 * @param {number=} fromIndex end the endsWith check at that position
-			 * @return {boolean}
-			 *
-			 * edition ECMA-262 6th Edition, 15.5.4.23
-			 */
-			"endsWith": function (substring, fromIndex) {
-				var strLen = this.length;
-
-				if (fromIndex === undefined) fromIndex = strLen;
-
-				fromIndex = +fromIndex;
-
-				substring += '';
-
-				var subLen = substring.length;
-
-				if (!subLen) return true;
-
-				if (!fromIndex || fromIndex < 1) return false;
-
-				fromIndex = (strLen < fromIndex ? strLen : fromIndex) - subLen;
-
-				return fromIndex >= 0
-					//&& this.charCodeAt(fromIndex) === substring.charCodeAt(0)//fast false
-					&& this.charCodeAt(fromIndex + subLen - 1) === substring.charCodeAt(subLen - 1)//fast false
-					&& this.lastIndexOf(substring, fromIndex) === fromIndex
-					;
-			}
-
-			,
-			/**
 			 * String.prototype.reverse
 			 * Reverse string
 			 * @return {string}
