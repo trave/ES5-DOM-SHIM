@@ -592,21 +592,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 				return _object;
 			}
-
-			/**
-			 * Object.isObject
-			 * need this method in Function.prototype.bind polyfill
-			 * Non-standart
-			 * */
-			, "isObject": function (object) {
-				var type;
-				return object
-					&& (
-						(type = typeof object) === "object"
-						|| type === "function"
-					)
-					;
-			}
 		});
 	}//if __GCC__ECMA_SCRIPT5__
 
