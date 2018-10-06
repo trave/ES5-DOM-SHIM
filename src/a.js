@@ -987,57 +987,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Object.getPropertyNames
-			 * Returns an array of all the names of the properties
-			 * @param {!Object} object
-			 * @requires Object.getOwnPropertyNames, Object.getPrototypeOf
-			 * @throws {TypeError}
-			 * @return {Array}
-			 *
-			 * @example:
-			 *
-			 * Object.getPropertyNames({});
-			 *
-			 * [
-			 *  'toString',
-			 *  'toLocaleString',
-			 *  'hasOwnProperty',
-			 *  'valueOf',
-			 *  'constructor',
-			 *  'propertyIsEnumerable',
-			 *  'isPrototypeOf',
-			 *  ]
-			 **/
-			"getPropertyNames": function (object) {
-				var properies;
-				var properiesObj = {};
-				var property;
-				var result = [];
-				var i;
-				var l;
-				var currentObject = object;
-
-				do {
-					properies = Object.getOwnPropertyNames(currentObject);
-
-					for (i = 0, l = properies.length; i < l; i++) {
-						property = properies[i];
-						if (!_hasOwnProperty(properiesObj, property)) {
-							properiesObj[property] = null;
-							result.push(property);
-						}
-					}
-
-					currentObject = Object.getPrototypeOf(currentObject);
-				}
-				while (currentObject !== null);
-
-				properiesObj = null;
-				return result;
-			}
-
-			,
-			/**
 			 * Object.is
 			 * */
 			"is": function (x, y) {
