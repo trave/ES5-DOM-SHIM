@@ -1532,22 +1532,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Number.isInteger
-			 * 15.7.3.13
-			 *
-			 * @param value
-			 * @return {boolean}
-			 */
-			"isInteger": function (value) {
-				return Number["isFinite"](value)
-					&& value >= -9007199254740992
-					&& value <= Number["MAX_INTEGER"]
-					&& Math.floor(value) === value
-					;
-			}
-
-			,
-			/**
 			 * Number.toInteger
 			 * 15.7.3.14
 			 *
