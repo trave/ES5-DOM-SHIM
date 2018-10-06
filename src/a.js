@@ -1518,17 +1518,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	if (__GCC__ECMA_SCRIPT6__) {
 		_append(Number, /** @lends {Number} */{
 			"MAX_INTEGER": 9007199254740991// 15.7.3.8
-
-			/*
-	 "EPSILON": (function () {
-      var next, result;
-      for (next = 1; 1 + next !== 1; next = next / 2) {
-        result = next;
-      }
-      return result;
-    }())
-	*/
-			, "EPSILON": 2.220446049250313e-16// 15.7.3.7
 		});
 	}//if __GCC__ECMA_SCRIPT6__
 
