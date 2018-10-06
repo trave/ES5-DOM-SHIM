@@ -1048,19 +1048,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			"from": _Array_from
 		});
 
-		_append(_Array_prototype_, /** @lends {Array.prototype} */{
-			/**
-			 * Array.prototype.contains
-			 * Check if given object locate in current array
-			 * @param {*} object object to locate in the current array.
-			 * @return {boolean}
-			 */
-			"contains": function (object) {
-				return !!~this.indexOf(object);
-			}
-
-		});
-
 
 	}//if(__GCC__ECMA_SCRIPT6__)
 
