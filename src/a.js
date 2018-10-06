@@ -1497,36 +1497,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			/**
 			 * speed test: http://jsperf.com/starts-ends-with
 			 *
-			 * String.prototype.startsWith
-			 * Check if given string locate in the begining of current string
-			 * @param {string} substring substring to locate in the current string.
-			 * @param {number=} fromIndex start the startsWith check at that position
-			 * @return {boolean}
-			 *
-			 * edition ECMA-262 6th Edition, 15.5.4.22
-			 *
-			 * @example:
-			 *
-			 * 'Hello'.startsWith('He') // true
-			 */
-			"startsWith": function (substring, fromIndex) {
-				substring += '';
-				fromIndex = +fromIndex || 0;
-
-				if (fromIndex < 0) fromIndex = 0;
-
-				if (!substring.length) return true;
-
-				return this.charCodeAt(fromIndex) === substring.charCodeAt(0)//fast false
-					//&& this.charCodeAt(fromIndex + subLen - 1) === substring.charCodeAt(subLen - 1)//fast false
-					&& this.indexOf(substring, fromIndex) === fromIndex
-					;
-			}
-
-			,
-			/**
-			 * speed test: http://jsperf.com/starts-ends-with
-			 *
 			 * http://jsperf.com/starts-ends-with
 			 * String.prototype.endsWith
 			 * Check if given string locate at the end of current string
