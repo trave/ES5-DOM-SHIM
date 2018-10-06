@@ -1,18 +1,15 @@
-﻿/** @license ES6/DOM4 polyfill | @version 0.8.8 | MIT License | github.com/termi */
-
-/**
+﻿/**
  * TODO:
- * 0. eng comments
- * 2. HTMLCanvasElement.toBlob (https://developer.mozilla.org/en/DOM/HTMLCanvasElement | http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata#answer-5100158)
- * 3. MutationObserver http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/
+ * 1. HTMLCanvasElement.toBlob (https://developer.mozilla.org/en/DOM/HTMLCanvasElement | http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata#answer-5100158)
+ * 2. MutationObserver http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/
  *                     http://updates.html5rocks.com/2012/02/Detect-DOM-changes-with-Mutation-Observers
- * 4. Web Animation API https://dvcs.w3.org/hg/FXTF/raw-file/tip/web-anim/index.html
- * 5. http://dev.w3.org/csswg/selectors4/ querySelector[All] shim
- * 6. http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseenter and http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseleave for standards-compliant browsers:
+ * 3. Web Animation API https://dvcs.w3.org/hg/FXTF/raw-file/tip/web-anim/index.html
+ * 4. http://dev.w3.org/csswg/selectors4/ querySelector[All] shim
+ * 5. http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseenter and http://www.w3.org/TR/DOM-Level-3-Events/#event-type-mouseleave for standards-compliant browsers:
  *   i) https://gist.github.com/3153964
  *   ii) http://blog.stchur.com/2007/03/15/mouseenter-and-mouseleave-events-for-firefox-and-other-non-ie-browsers/
  *   iii) https://developer.mozilla.org/en-US/docs/DOM/DOM_event_reference/mouseleave | https://developer.mozilla.org/en-US/docs/DOM/DOM_event_reference/mouseenter
- * 7. https://bugzilla.mozilla.org/show_bug.cgi?id=486002 (Node.compareDocumentPosition returns spurious preceding|following bits for disconnected nodes) :: https://bugzilla.mozilla.org/attachment.cgi?id=671404&action=diff
+ * 6. https://bugzilla.mozilla.org/show_bug.cgi?id=486002 (Node.compareDocumentPosition returns spurious preceding|following bits for disconnected nodes) :: https://bugzilla.mozilla.org/attachment.cgi?id=671404&action=diff
  */
 
 /** @define {boolean} */
@@ -157,7 +154,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 	/**
 	 * @const
-	 * @param {Object} obj
+	 * @param {*} obj
 	 * @param {boolean=} _allowNull
 	 */
 	function _toObject(obj, _allowNull) {
@@ -177,12 +174,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			ex.message = errStr + ': DOM Exception ' + ex.code;
 			throw ex;
 		};
-	var emptyFunction = function () {
-	};
-	/** @type {(Function|undefined)} */
-	var functionReturnFalse = function () {
-			return false
-		};
+	/**
+	 * @param {T} param
+	 * @return {T}
+	 * @template T
+	 */
 	var functionReturnFirstParam = function (param) {
 		return param
 	};
@@ -231,7 +227,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		return result;
 	};
 	var _Array_map_;
-	var _Array_from;
 	var _Array_forEach_;
 	var array_some_or_every;
 	var array_find_or_findIndex;
@@ -291,28 +286,26 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		 * Wraps the function in another, locking its execution scope to an object specified by thisObj.
 		 * http://es5.github.com/#x15.3.4.5
 		 * http://code.google.com/p/js-examples/source/browse/trunk/bind_emulation.js
-		 * @param {Object} object
-		 * @param {...} var_args
-		 * @return {Function}
+		 * @this {Function}
+		 * @param {Object|undefined} object
+		 * @param {...*} var_args
+		 * @return {!Function}
 		 * @version 3
 		 */
-		if (!Function.prototype.bind) Function.prototype.bind = function (object, var_args) {
+		function bind(object, var_args) {
 			//If IsCallable(Target) is false, throw a TypeError exception.
-			if (typeof this != "function") {
+			if (typeof this !== "function") {
 				if (_String_trim_.call(this + "").indexOf("function") !== 0) {
 					throwTypeError("Function.prototype.bind called on incompatible " + this);
 				}
 			}
 
-			var __method = this
-				, args
-				, _result
-			;
-
-
-			var _Object_isPlainObject = function (object) {
+			var __method = this;
+			var args;
+			var _result;
+			function _Object_isPlainObject(object) {
 				return object && _toString_.call(object) === "[object Object]";// test with Object.prototype.toString
-			};
+			}
 
 			if (arguments.length > 1) {
 				args = _Array_slice_.call(arguments, 1);
@@ -354,7 +347,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				//_result.constructor = __method;
 			}
 			return _result;
-		};
+		}
+
+		if (!Function.prototype.bind) {
+			Function.prototype.bind = bind;
+		}
 	}//if __GCC__ECMA_SCRIPT5__
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Function prototype  ==================================  */
 	/*  =======================================================================================  */
@@ -374,8 +371,8 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 *
 			 * Implementation from http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation
 			 *
-			 * @param obj The object whose enumerable own properties are to be returned.
-			 * @return {Array} object keys
+			 * @param {!Object} obj The object whose enumerable own properties are to be returned.
+			 * @return {!Array<string>} object keys
 			 */
 			keys: (function () {
 				var DontEnums
@@ -397,8 +394,8 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				}
 
 				return function (obj) {
-					if (typeof obj != "object"
-						&& typeof obj != "function"
+					if (typeof obj !== "object"
+						&& typeof obj !== "function"
 						|| obj === null
 					) {
 						throwTypeError("Object.keys called on a non-object");
@@ -429,8 +426,8 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * ES5 15.2.3.4
 			 * http://es5.github.com/#x15.2.3.4
 			 * Returns an array of all properties (enumerable or not) found upon a given object.
-			 * @param obj The object whose enumerable own properties are to be returned.
-			 * @return {Array} object keys
+			 * @param {!Object} obj The object whose enumerable own properties are to be returned.
+			 * @return {!Array<string>} object keys
 			 */
 			getOwnPropertyNames: function (obj) {
 				return Object.keys(obj);
@@ -481,9 +478,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * ES5 15.2.3.11
 			 * http://es5.github.com/#x15.2.3.11
 			 * @param {!Object} object
-			 * @param {boolean} is sealed?
+			 * @return {boolean} is sealed?
 			 */
-			isSealed: functionReturnFalse
+			isSealed: function(object) {
+				return false;
+			}
 
 			,
 			/**
@@ -491,9 +490,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * ES5 15.2.3.12
 			 * http://es5.github.com/#x15.2.3.12
 			 * @param {!Object} object
-			 * @param {boolean} is frozen?
+			 * @return {boolean} is frozen?
 			 */
-			isFrozen: functionReturnFalse
+			isFrozen: function(object) {
+				return false;
+			}
 
 			,
 			/**
@@ -501,7 +502,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * ES5 15.2.3.13
 			 * http://es5.github.com/#x15.2.3.13
 			 * @param {!Object} object
-			 * @param {boolean} is extensible?
+			 * @return {boolean} is extensible?
 			 */
 			isExtensible: function (object) {
 				// 1. If Type(O) is not Object throw a TypeError exception.
@@ -510,9 +511,8 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				}
 
 				// 2. Return the Boolean value of the [[Extensible]] internal property of O.
-				var name = ''
-					, returnValue
-				;
+				var name = '';
+				var returnValue;
 
 				while (_hasOwnProperty(object, name)) {
 					name += '?';
@@ -571,10 +571,15 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 						throwTypeError("typeof prototype[" + (typeof _prototype) + "] != 'object'");
 					}
 
-					emptyFunction.prototype = _prototype;
-					_object = new emptyFunction();
+					/**
+					 * @constructor
+					 */
+					var EmptyFunction = function () {};
+
+					EmptyFunction.prototype = _prototype;
+					_object = new EmptyFunction();
 					// Clean up dangling references.
-					emptyFunction.prototype = null;
+					EmptyFunction.prototype = {};
 					// IE has no built-in implementation of `Object.getPrototypeOf`
 					// neither `__proto__`, but this manually setting `__proto__` will
 					// guarantee that `Object.getPrototypeOf` will work as expected with
@@ -636,7 +641,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 						//FireFox failed this test
 						try {
 							Object.getOwnPropertyDescriptor(
-								document.__proto__,
+								/** @type {!Object} */ (document.__proto__),
 								"firstChild"
 							);
 							return true;
@@ -690,9 +695,9 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		if (!Object.defineProperty || definePropertyFallback) {
 			/**
 			 * Defines a new property directly on an object, or modifies an existing property on an object, and returns the object.
-			 * @param {Object} object The object on which to define the property.
+			 * @param {!Object} object The object on which to define the property.
 			 * @param {string} property The name of the property to be defined or modified.
-			 * @param {Object} descriptor The descriptor for the property being defined or modified.
+			 * @param {!Object} descriptor The descriptor for the property being defined or modified.
 			 */
 			Object.defineProperty = function defineProperty(object, property, descriptor) {
 				if ((typeof object != "object" && typeof object != "function") || object === null) {
@@ -774,8 +779,8 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		if (!Object.defineProperties || definePropertiesFallback) {
 			/**
 			 * Defines new or modifies existing properties directly on an object, returning the object.
-			 * @param {Object} object The object on which to define or modify properties.
-			 * @param {Object} properties An object whose own enumerable properties constitute descriptors for the properties to be defined or modified.
+			 * @param {!Object} object The object on which to define or modify properties.
+			 * @param {!Object} properties An object whose own enumerable properties constitute descriptors for the properties to be defined or modified.
 			 */
 			Object.defineProperties = function /*defineProperties GCC rename local function name anyway*/(object, properties) {
 				// make a valiant attempt to use the real defineProperty
@@ -878,27 +883,27 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	if (__GCC__ECMA_SCRIPT6__) {
 
 		if (!Object["getPropertyDescriptor"] || getOwnPropertyDescriptorFallback) {
+			/**
+			 * Object.getPropertyDescriptor
+			 * Returns a property descriptor of the specified object, including object’s prototype chain
+			 * @param {Object} object
+			 * @param {string} name - The name of the property
+			 * @requires Object.getOwnPropertyDescriptor, Object.getPrototypeOf
+			 * @throws {TypeError}
+			 * @return {Object}
+			 *
+			 * @example:
+			 *
+			 * Object.getPropertyDescriptor({}, 'toString');
+			 *
+			 * {
+			 *    value: [Function: toString],
+			 *    writable: true,
+			 *    enumerable: false,
+			 *    configurable: true
+			 * }
+			 **/
 			Object["getPropertyDescriptor"] = (function (getPropertyDescriptorFallback) {
-				/**
-				 * Object.getPropertyDescriptor
-				 * Returns a property descriptor of the specified object, including object’s prototype chain
-				 * @param {Object} object
-				 * @param {string} name - The name of the property
-				 * @requires Object.getOwnPropertyDescriptor, Object.getPrototypeOf
-				 * @throws {TypeError}
-				 * @return {Object}
-				 *
-				 * @example:
-				 *
-				 * Object.getPropertyDescriptor({}, 'toString');
-				 *
-				 * {
-				 *    value: [Function: toString],
-				 *    writable: true,
-				 *    enumerable: false,
-				 *    configurable: true
-				 * }
-				 **/
 				return function (object, property) {
 					// make a valiant attempt to use the real getPropertyDescriptor
 					// for:
@@ -930,11 +935,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			/**
 			 * Object.getOwnPropertyDescriptors
 			 * Returns a property descriptor of the specified object, including object’s prototype chain
-			 * @param {Object} object
+			 * @param {!Object} object
 			 * @requires Object.defineProperty, Object.getOwnPropertyNames,
 			 * Object.getOwnPropertyDescriptor, Array.prototype.forEach
 			 * @throws {TypeError}
-			 * @return {Object}
+			 * @return {!Object<?,ObjectPropertyDescriptor>}
 			 *
 			 * @example:
 			 *
@@ -984,7 +989,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			/**
 			 * Object.getPropertyNames
 			 * Returns an array of all the names of the properties
-			 * @param {Object} object
+			 * @param {!Object} object
 			 * @requires Object.getOwnPropertyNames, Object.getPrototypeOf
 			 * @throws {TypeError}
 			 * @return {Array}
@@ -1004,16 +1009,16 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 *  ]
 			 **/
 			"getPropertyNames": function (object) {
-				var properies
-					, properiesObj = {}
-					, property
-					, result = []
-					, i
-					, l
-				;
+				var properies;
+				var properiesObj = {};
+				var property;
+				var result = [];
+				var i;
+				var l;
+				var currentObject = object;
 
 				do {
-					properies = Object.getOwnPropertyNames(object);
+					properies = Object.getOwnPropertyNames(currentObject);
 
 					for (i = 0, l = properies.length; i < l; i++) {
 						property = properies[i];
@@ -1023,9 +1028,9 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 						}
 					}
 
-					object = Object.getPrototypeOf(object);
+					currentObject = Object.getPrototypeOf(currentObject);
 				}
-				while (object !== null);
+				while (currentObject !== null);
 
 				properiesObj = null;
 				return result;
@@ -1058,9 +1063,9 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * 15.2.3.17
 			 * Object.assign
 			 * @requires Object.keys, Array.prototype.reduce
-			 * @param {Object} target
-			 * @param {Object} source
-			 * @return {Object}
+			 * @param {!Object} target
+			 * @param {!Object} source
+			 * @return {!Object}
 			 */
 			"assign": function (target, source) {
 				target = _toObject(target);//TODO:: do we are realy need _toObject call?
@@ -1110,11 +1115,14 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 // IE < 9 bug: [1,2].splice(0).join("") == "" but should be "12"
 		if ([1, 2].splice(0).length !== 2) {
 			/**
-			 * @param {number} start
-			 * @param {number} deleteCount
-			 * @return {Array}
+			 * @param {*=} start
+			 * @param {*=} deleteCount
+			 * @param {...T} rest
+			 * @return {!Array<T>}
+			 * @this {IArrayLike<T>}
+			 * @template T
 			 */
-			_Array_prototype_.splice = function (start, deleteCount) {
+			_Array_prototype_.splice = function (start, deleteCount, rest) {
 				if (!arguments.length) return [];
 
 				if (arguments[0] == undefined/*undefined or null*/) arguments[0] = 0;
@@ -1133,24 +1141,25 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	 * speed test: http://jsperf.com/array-from
 	 *
 	 * Array.from
-	 * @param {(Object|Array)} iterable
-	 * @param {Function=} mapFn
-	 * @param {*=} thisObj
-	 * @return {Array}
-	 * @private
+	 * @param {IArrayLike<T>|Iterable<T>|string} iterable
+	 * @param {function(this:S, (T|string), number): R=} mapFn
+	 * @param {S=} thisObj
+	 * @return {!Array<R>}
+	 * @template T
+	 * @template S
+	 * @template R
 	 */
-	_Array_from = function (iterable, mapFn, thisObj) {
+	function _Array_from(iterable, mapFn, thisObj) {
 		var isConstructor = typeof this === 'function' && this !== Array;
 
 		if (!isConstructor && mapFn) {
 			return _Array_map_.call(iterable, mapFn, thisObj);
 		}
 
-		var object = _toObject(iterable, true)
-			, len
-			, result
-			, key
-		;
+		var object = _toObject(iterable, true);
+		var len;
+		var result;
+		var key;
 
 		if (!isConstructor) {
 			try {
@@ -1194,10 +1203,13 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		_append(Array, /** @lends {Array} */{
 			/**
 			 * Array.from
-			 * @param iterable
-			 * @param {Function=} mapFn
-			 * @param {*=} thisObj
-			 * @return {Array}
+			 * @param {IArrayLike<T>|Iterable<T>|string} iterable
+			 * @param {function(this:S, (T|string), number): R=} mapFn
+			 * @param {S=} thisObj
+			 * @return {!Array<R>}
+			 * @template T
+			 * @template S
+			 * @template R
 			 */
 			"from": _Array_from
 
@@ -1205,8 +1217,9 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			/**
 			 * Array.of
 			 * return array of arguments of this function
-			 * @param {...} args
-			 * @return {Array}
+			 * @param {...T} args
+			 * @return {!Array<T>}
+			 * @template T
 			 */
 			"of": function (args) {
 				return _Array_from(arguments);
@@ -1308,7 +1321,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	};
 	/**
 	 * @const
-	 * @param {Function} iterator
+	 * @param {Function} callback
 	 * @param {Object} context
 	 */
 	_Array_map_ = _Array_prototype_.map || function (callback, context) {
@@ -1458,8 +1471,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * http://es5.github.com/#x15.4.4.18
 			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/forEach
 			 * Executes a provided function once per array element.
-			 * @param {Function} iterator Function to execute for each element.
-			 * @param {Object} context Object to use as this when executing callback.
+			 * @param {function(this:S, T, number, !Array<T>): ?|null} iterator Function to execute for each element.
+			 * @param {S=} context Object to use as this when executing callback.
+			 * @this {IArrayLike<T>|string}
+			 * @template T
+			 * @template S
 			 */
 			forEach: _Array_forEach_
 
@@ -1473,9 +1489,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * https://gist.github.com/1034425
 			 *
 			 * Returns the first index at which a given element can be found in the array, or -1 if it is not present.
-			 * @param {*} searchElement Element to locate in the array.
-			 * @param {number} fromIndex The index at which to begin the search. Defaults to 0, i.e. the whole array will be searched. If the index is greater than or equal to the length of the array, -1 is returned, i.e. the array will not be searched. If negative, it is taken as the offset from the end of the array. Note that even when the index is negative, the array is still searched from front to back. If the calculated index is less than 0, the whole array will be searched.
+			 * @param {T} searchElement Element to locate in the array.
+			 * @param {number=} fromIndex The index at which to begin the search. Defaults to 0, i.e. the whole array will be searched. If the index is greater than or equal to the length of the array, -1 is returned, i.e. the array will not be searched. If negative, it is taken as the offset from the end of the array. Note that even when the index is negative, the array is still searched from front to back. If the calculated index is less than 0, the whole array will be searched.
 			 * @return {number}
+			 * @this {IArrayLike<T>|string}
+			 * @template T
 			 */
 			indexOf: function (searchElement, fromIndex) {
 				var thisArray = _toObject(this)
@@ -1534,9 +1552,11 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * http://es5.github.com/#x15.4.4.15
 			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
 			 * Returns the last index at which a given element can be found in the array, or -1 if it is not present. The array is searched backwards, starting at fromIndex.
-			 * @param {*} searchElement Element to locate in the array.
-			 * @param {number} fromIndex The index at which to start searching backwards. Defaults to the array's length, i.e. the whole array will be searched. If the index is greater than or equal to the length of the array, the whole array will be searched. If negative, it is taken as the offset from the end of the array. Note that even when the index is negative, the array is still searched from back to front. If the calculated index is less than 0, -1 is returned, i.e. the array will not be searched.
+			 * @param {T} searchElement Element to locate in the array.
+			 * @param {number=} fromIndex The index at which to start searching backwards. Defaults to the array's length, i.e. the whole array will be searched. If the index is greater than or equal to the length of the array, the whole array will be searched. If negative, it is taken as the offset from the end of the array. Note that even when the index is negative, the array is still searched from back to front. If the calculated index is less than 0, -1 is returned, i.e. the array will not be searched.
 			 * @return {number}
+			 * @this {IArrayLike<T>|string}
+			 * @template T
 			 */
 			lastIndexOf: function (searchElement, fromIndex) {
 				var thisArray = _toObject(this)
@@ -1598,9 +1618,12 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * http://es5.github.com/#x15.4.4.17
 			 * https://developer.mozilla.org/en/JavaScript/Reference/global_Objects/Array/filter
 			 * Creates a new array with all elements that pass the test implemented by the provided function.
-			 * @param {Function} callback Function to test each element of the array.
-			 * @param {Object=} thisObject Object to use as this when executing callback.
-			 * @return {Array}
+			 * @param {function(this:S, T, number, !Array<T>): ?|null} callback Function to test each element of the array.
+			 * @param {S=} thisObject Object to use as this when executing callback.
+			 * @return {!Array<T>}
+			 * @this {IArrayLike<T>|string}
+			 * @template T
+			 * @template S
 			 */
 			filter: function (callback, thisObject) {
 				// ES5 : "If IsCallable(callback) is false, throw a TypeError exception." in "_call_function" function
@@ -1630,9 +1653,13 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * http://es5.github.com/#x15.4.4.19
 			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/map
 			 * Creates a new array with the results of calling a provided function on every element in this array.
-			 * @param {Function} callback Function that produces an element of the new Array from an element of the current one.
-			 * @param {Object?} thisArg Object to use as this when executing callback.
-			 * @return {Array}
+			 * @param {function(this:S, T, number, !Array<T>): R|null} callback Function that produces an element of the new Array from an element of the current one.
+			 * @param {S=} thisObject Object to use as this when executing callback.
+			 * @return {!Array<R>}
+			 * @this {IArrayLike<T>|string}
+			 * @template T
+			 * @template S
+			 * @template R
 			 */
 			map: _Array_map_
 		});
@@ -1708,6 +1735,12 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 // If separator is undefined, then the result array contains just one String, which is the this value (converted to a String). If limit is not undefined, then the output array is truncated so that it contains no more than limit elements.
 // "0".split(undefined, 0) -> []
 		if ("0".split(undefined, 0).length) {
+			/**
+			 * @param {*=} separator
+			 * @param {number=} limit
+			 * @return {!Array<string>}
+			 * @this {String|string}
+			 */
 			_String_prototype.split = function (separator, limit) {
 				if (separator === undefined && limit === 0) return [];
 				return _String_split_.call(this, separator, limit);
@@ -1834,7 +1867,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			/**
 			 * String.prototype.reverse
 			 * Reverse string
-			 * @return {Array}
+			 * @return {string}
 			 */
 			"reverse": function () {
 				return _String_split_.call(this + "", "").reverse().join("");
@@ -1898,22 +1931,23 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 		});
 
-		/**
-		 * String.fromCodePoint
-		 * edition ECMA-262 6th Edition, 15.5.3.3
-		 *
-		 * @param {...(number|string)} codePoints code points
-		 * @return {string} Return the string value whose elements are, in order, the elements
-		 * in the List elements. If length is 0, the empty string is returned.     *
-		 * @throws {RangeError}
-		 *
-		 * @example: String.fromCodePoint(0x30, 107); // Ok
-		 **/
-		if (!String["fromCodePoint"]) String["fromCodePoint"] = function (codePoints) {
-			var i = arguments.length
-				, points = []
-				, offset
-			;
+
+		if (!String["fromCodePoint"]) {
+			/**
+			 * String.fromCodePoint
+			 * edition ECMA-262 6th Edition, 15.5.3.3
+			 *
+			 * @param {...(number|string)} codePoints code points
+			 * @return {string} Return the string value whose elements are, in order, the elements
+			 * in the List elements. If length is 0, the empty string is returned.     *
+			 * @throws {RangeError}
+			 *
+			 * @example: String.fromCodePoint(0x30, 107); // Ok
+			 **/
+			String["fromCodePoint"] = function (codePoints) {
+				var i = arguments.length;
+				var points = [];
+				var offset;
 
 			while (i--) {
 				offset = arguments[i];
@@ -1931,6 +1965,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			}
 
 			return String.fromCharCode.apply(String, points);
+		}
 		};
 	}//if __GCC__ECMA_SCRIPT6__
 
@@ -2733,9 +2768,8 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		 * @param {string} _string
 		 */
 		DOMStringCollection_init = function (thisObj, _string) {
-			var string = _string || ""//default value
-				, isChange = !!thisObj.length
-			;
+			var string = _string || "";
+			var isChange = !!thisObj.length;
 
 			if (isChange) {
 				while (thisObj.length > 0) {
@@ -2980,7 +3014,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				//  DOMTokenList.prototype.remove(tokens...)
 				//  DOMTokenList.prototype.toggle(token, force)
 				//  [bugfix, opera] Old Opera (11.50 at least) not supported null as class name in add/remove/...etc functions
-				!function (_old_add, _old_remove, class_helper) {
+				(function (_old_add, _old_remove, class_helper) {
 					_tmp_["add"] = function () {
 						_Array_forEach_.call(_Array_map_.call(arguments, class_helper), _old_add, this);
 					};
@@ -2988,7 +3022,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 						_Array_forEach_.call(_Array_map_.call(arguments, class_helper), _old_remove, this);
 					};
 					_tmp_["toggle"] = _classList_toggle;
-				}.call(null, _tmp_["add"], _tmp_["remove"], function (a) {
+				}).call(null, _tmp_["add"], _tmp_["remove"], function (a) {
 					return a + ""
 				});
 			}
@@ -3358,14 +3392,14 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 		}
 		if (_tmp_ === false || !_tmp_.childNodes.length) {
 			if ((_tmp_ = global["HTMLSelectElement"]) && (_tmp_ = _tmp_.prototype) && ("remove" in _tmp_)) {
-				!function (_HTMLSelectElement_prototype, _HTMLSelectElement_remove) {
+				(function (_HTMLSelectElement_prototype, _HTMLSelectElement_remove) {
 					Object.defineProperty(_HTMLSelectElement_prototype, "remove", {
 						"value": function (index) {
 							if (arguments.length) _HTMLSelectElement_remove.apply(this, arguments);
 							else Element.prototype["remove"].call(this);
 						}
 					});
-				}.call(null, _tmp_, _tmp_["remove"]);
+				}).call(null, _tmp_, _tmp_["remove"]);
 			}
 		}
 
@@ -4098,11 +4132,6 @@ https://raw.github.com/csnover/js-iso8601/master/iso8601.min.js
 
 	/*  =======================================================================================  */
 	/*  ========================================  Delete section  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
-// cleanup, no need this any more
-	_append = _tmp_ = _testElement = _document_createElement = _Array_prototype_ = _String_prototype =
-		_Event = _CustomEvent = _Event_prototype = _Custom_Event_prototype = _tmp_function = _classList_toggle =
-			_Element_prototype = _Shimed_Date = functionReturnFalse = functionReturnFirstParam = null;
 
 	throwTypeError = function (msg) {
 		throw new TypeError(msg)
