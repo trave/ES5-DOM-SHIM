@@ -1532,18 +1532,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Number.isFinite
-			 * 15.7.3.12
-			 *
-			 * @param value
-			 * @return {boolean}
-			 */
-			"isFinite": function (value) {
-				return typeof value === 'number' && global["isFinite"](value);
-			}
-
-			,
-			/**
 			 * Number.isInteger
 			 * 15.7.3.13
 			 *
