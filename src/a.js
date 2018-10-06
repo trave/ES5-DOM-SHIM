@@ -1495,16 +1495,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 		_append(_String_prototype, /** @lends {String.prototype} */{
 			/**
-			 * String.prototype.reverse
-			 * Reverse string
-			 * @return {string}
-			 */
-			"reverse": function () {
-				return _String_split_.call(this + "", "").reverse().join("");
-			}
-
-			,
-			/**
 			 * String.prototype.trimLeft
 			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/TrimLeft
 			 * */
