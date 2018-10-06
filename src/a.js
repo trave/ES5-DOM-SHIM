@@ -1625,43 +1625,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			"trimRight": _String_trim_right
 
 		});
-
-
-		if (!String["fromCodePoint"]) {
-			/**
-			 * String.fromCodePoint
-			 * edition ECMA-262 6th Edition, 15.5.3.3
-			 *
-			 * @param {...(number|string)} codePoints code points
-			 * @return {string} Return the string value whose elements are, in order, the elements
-			 * in the List elements. If length is 0, the empty string is returned.     *
-			 * @throws {RangeError}
-			 *
-			 * @example: String.fromCodePoint(0x30, 107); // Ok
-			 **/
-			String["fromCodePoint"] = function (codePoints) {
-				var i = arguments.length;
-				var points = [];
-				var offset;
-
-			while (i--) {
-				offset = arguments[i];
-
-				if (offset < 0 || offset > 0x10FFFF)
-					throw new RangeError();
-
-				if (offset < 0x10000)
-					points.unshift(offset);
-
-				else {
-					offset -= 0x10000;
-					points.unshift(0xD800 | (offset >> 10), 0xDC00 | (offset & 0x3FF));
-				}
-			}
-
-			return String.fromCharCode.apply(String, points);
-		}
-		};
 	}//if __GCC__ECMA_SCRIPT6__
 
 
