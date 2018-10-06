@@ -92,7 +92,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	var _Array_slice_ = _Array_prototype_.slice;
 	/** @const */
 	var _Array_splice_ = _Array_prototype_.splice;
-	var _String_contains_;
+	var _String_includes_;
 	/** @const */
 	var _String_split_ = _String_prototype.split;
 	var _tmp_;
@@ -1486,7 +1486,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	}//if __GCC__SCRIPT_BUGFIXING_STRING_PROTOTYPE_SPLIT__
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  bug fixing  ==================================  */
 
-	_String_contains_ = _String_prototype["contains"] || function (substring, fromIndex) {
+	_String_includes_ = _String_prototype["includes"] || function (substring, fromIndex) {
 		return this.indexOf(substring, fromIndex) !== -1;
 	};
 
@@ -1587,18 +1587,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 					&& this.lastIndexOf(substring, fromIndex) === fromIndex
 					;
 			}
-
-			,
-			/**
-			 * String.prototype.contains
-			 * Check if given string locate in current string
-			 * @param {string} substring substring to locate in the current string.
-			 * @param {number=} fromIndex start the contains check at that position
-			 * @return {boolean}
-			 *
-			 * edition ECMA-262 6th Edition, 15.5.4.24
-			 */
-			"contains": _String_contains_
 
 			,
 			/**
@@ -2491,7 +2479,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 					this.DOMStringCollection_check_Token_and_argumentsCount(token);
 
-					if (!_String_contains_.call(prevValue, " " + token + " ")) { // not contains
+					if (!_String_includes_.call(prevValue, " " + token + " ")) { // not contains
 						currentValue += ((i > 0 || currentValue && !currentValue.match(/\s+$/g) ? " " : "") + token);
 
 						this[this.length++] = token;
@@ -2559,7 +2547,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				this.DOMStringCollection_check_Token_and_argumentsCount(token, arguments.length);
 				this.DOMStringCollection_check_currentValue();
 
-				return _String_contains_.call(" " + this["value"] + " ", " " + token + " ");
+				return _String_includes_.call(" " + this["value"] + " ", " " + token + " ");
 			},
 			"item": function (index) {
 				this.DOMStringCollection_check_currentValue();
@@ -2887,7 +2875,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 											tmp = rules[2].slice(1).split(".");
 											str = " " + thisObj.className + " ";
 											while (tmp[++i] && match) {
-												match = _String_contains_.call(str, " " + tmp[i] + " ");
+												match = _String_includes_.call(str, " " + tmp[i] + " ");
 											}
 										}
 								}
@@ -3202,7 +3190,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 			Object.defineProperty(_Element_prototype, "labels", {
 				enumerable: true,
 				"get": function () {
-					if (!(_String_contains_.call(_labelable_elements, (" " + this.nodeName + " ").toUpperCase()))) {
+					if (!(_String_includes_.call(_labelable_elements, (" " + this.nodeName + " ").toUpperCase()))) {
 						return undefined;
 					}
 
@@ -3266,7 +3254,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 				return null;
 			};
 			_nodesRecursivelyWalk.labelHelper = function (el) {
-				if (_String_contains_.call(_labelable_elements, " " + el.nodeName.toUpperCase() + " ")) {
+				if (_String_includes_.call(_labelable_elements, " " + el.nodeName.toUpperCase() + " ")) {
 					return el
 				}
 				return null;
@@ -3552,7 +3540,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 // this object is not a finite Number a RangeError exception is thrown.
 		if (!_Native_Date.prototype.toISOString
 			|| (new _Native_Date(-1).toISOString() !== '1969-12-31T23:59:59.999Z')
-			|| (_String_contains_.call(new _Native_Date(-62198755200000).toISOString(), '-000001'))
+			|| (_String_includes_.call(new _Native_Date(-62198755200000).toISOString(), '-000001'))
 		) {
 			_Native_Date.prototype.toISOString = function () {
 				var result,
@@ -3604,7 +3592,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 // This function provides a String representation of a Date object for use by
 // JSON.stringify (15.12.3).Object.create(f.prototype)
 		if (!_Native_Date.prototype.toJSON
-			|| _String_contains_.call((new _Native_Date(-62198755200000)).toJSON(), '-000001')
+			|| _String_includes_.call((new _Native_Date(-62198755200000)).toJSON(), '-000001')
 			|| ~(function () {
 				// is Date.prototype.toJSON non-generic?
 				try {
