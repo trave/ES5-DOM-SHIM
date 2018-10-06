@@ -1530,8 +1530,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	*/
 			, "EPSILON": 2.220446049250313e-16// 15.7.3.7
 
-			, "parseFloat": global["parseFloat"]// 15.7.3.10
-
 			,
 			/**
 			 * Number.isNaN
