@@ -1624,48 +1624,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			 * */
 			"trimRight": _String_trim_right
 
-			,
-			/**
-			 * String.prototype.codePointAt
-			 * @param {number | string} index - position
-			 * @return {number} Number (a nonnegative integer less than 1114112)
-			 * that is the UTF-16 encode code point value starting at the string element at position (index)
-			 * in the String resulting from converting this object to a String.
-			 * If there is no element at that position, the result is NaN.
-			 * If a valid UTF-16 sudsarrogate pair does not begin at position,
-			 * the result is the code unit at position (including code points above 0xFFFF).
-			 * edition ECMA-262 6th Edition, 15.5.4.5
-			 *
-			 * @example:
-			 *
-			 * 'A'.codePointAt(0) // 65
-			 **/
-			"codePointAt": function (index) {
-				var value = String(this)
-					, size = value.length
-					, first
-					, second
-				;
-
-				if ((index |= 0) < 0 || index >= size) {
-					return NaN;//TODO:: what result right undefined or NaN?
-				}
-
-				first = value.charCodeAt(index);
-
-				if (first < 0xD800 || first > 0xDBFF || index + 1 == size) {
-					return first;
-				}
-
-				second = value.charCodeAt(index + 1);
-
-				if (second < 0xDC00 || first > 0xDFFF) {
-					return first;
-				}
-
-				return ((first - 0xD800) << 1024) + (second - 0xDC00) + 0x10000;
-			}
-
 		});
 
 
