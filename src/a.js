@@ -931,61 +931,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			})(Object["getPropertyDescriptor"]);
 		}
 
-		_append(Object, /** @lends {Object} */{
-			/**
-			 * Object.getOwnPropertyDescriptors
-			 * Returns a property descriptor of the specified object, including object’s prototype chain
-			 * @param {!Object} object
-			 * @requires Object.defineProperty, Object.getOwnPropertyNames,
-			 * Object.getOwnPropertyDescriptor, Array.prototype.forEach
-			 * @throws {TypeError}
-			 * @return {!Object<?,ObjectPropertyDescriptor>}
-			 *
-			 * @example:
-			 *
-			 * var object = {};
-			 *
-			 * Object.defineProperty(object, 'a', {
-			 *   value: 1,
-			 *   configurable: false,
-			 *   enumerable:   false,
-			 *   writable:     false
-			 * });
-			 *
-			 * Object.defineProperty(object, 'b', {
-			 *   value:2,
-			 *   configurable: true,
-			 *   enumerable:   true,
-			 *   writable:     true
-			 * });
-			 *
-			 * Object.getOwnPropertyDescriptors(object);
-			 *
-			 * a: {
-			 *   value: 1,
-			 *   configurable: false,
-			 *   enumerable:   false,
-			 *   writable:     false
-			 * },
-			 *
-			 * b: {
-			 *   value: 2,
-			 *   configurable: true,
-			 *   enumerable:   true,
-			 *   writable:     true
-			 * }
-			 **/
-			"getOwnPropertyDescriptors": function (object) {
-				var descriptors = {};
-
-				_Array_forEach_.call(Object.getOwnPropertyNames(object), function (property) {
-					this[property] = Object.getOwnPropertyDescriptor(object, property);
-				}, descriptors);
-
-				return descriptors;
-			}
-		});
-
 	}//if( __GCC__ECMA_SCRIPT6__ )
 
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Object prototype  ==================================  */
