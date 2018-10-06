@@ -85,23 +85,19 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 	var global = this;
 
-	var /** @const */
-	_Object_prototype = Object.prototype;
+	/** @const */
+	var _Object_prototype = Object.prototype;
 	var _String_prototype = String.prototype;
 	var _Array_prototype_ = Array.prototype;
 	/** @const */
-	var
-		_Function_apply_ = Function.prototype.apply;
+	var _Function_apply_ = Function.prototype.apply;
 	/** @const */
-	var
-		_Array_slice_ = _Array_prototype_.slice;
+	var _Array_slice_ = _Array_prototype_.slice;
 	/** @const */
-	var
-		_Array_splice_ = _Array_prototype_.splice;
+	var _Array_splice_ = _Array_prototype_.splice;
 	var _String_contains_;
 	/** @const */
-	var
-		_String_split_ = _String_prototype.split;
+	var _String_split_ = _String_prototype.split;
 	var _tmp_;
 	/** Use native or unsafe but fast 'bind' for service and performance needs
 	 * Set <native Function#bind> for Opera, FireFox and Safari but for V8 set it to shim function
@@ -131,8 +127,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			};
 		};
 	/** @const */
-	var
-		_hasOwnProperty = _fastUnsafe_Function_bind_.call(Function.prototype.call, _Object_prototype.hasOwnProperty);
+	var _hasOwnProperty = _fastUnsafe_Function_bind_.call(Function.prototype.call, _Object_prototype.hasOwnProperty);
 
 	/**
 	 * Call _function
@@ -176,8 +171,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	var /** @const */
 	_toString_ = _Object_prototype.toString;
 	/** @const */
-	var
-		_throwDOMException = function (errStr) {
+	var _throwDOMException = function (errStr) {
 			var ex = Object.create(DOMException.prototype);
 			ex.code = DOMException[errStr];
 			ex.message = errStr + ': DOM Exception ' + ex.code;
@@ -186,8 +180,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	var emptyFunction = function () {
 	};
 	/** @type {(Function|undefined)} */
-	var
-		functionReturnFalse = function () {
+	var functionReturnFalse = function () {
 			return false
 		};
 	var functionReturnFirstParam = function (param) {
@@ -203,21 +196,16 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	var _testElement = _document_createElement('p');
 	var dom4_mutationMacro;
 	/** @type {number} some unique identifire. must inc after use */
-	var
-		UUID = 1;
+	var UUID = 1;
 	/** @const @type{string} UUID property name */
-	var
-		UUID_PROP_NAME = "__UUID__";
+	var UUID_PROP_NAME = "__UUID__";
 	var _tmp_function;
 	/** @type {RegExp} @const */
-	var
-		RE__selector__easySelector = /^(\w+)?((?:\.(?:[\w\-]+))+)?$|^#([\w\-]+$)/;
+	var RE__selector__easySelector = /^(\w+)?((?:\.(?:[\w\-]+))+)?$|^#([\w\-]+$)/;
 	/** @type {RegExp} @const */
-	var
-		RE__matchSelector__doubleSpaces = /\s*([,>+~ ])\s*/g;
+	var RE__matchSelector__doubleSpaces = /\s*([,>+~ ])\s*/g;
 	/** @type {RegExp} */
-	var
-		RE_document_find_scopedReplacer;
+	var RE_document_find_scopedReplacer;
 	var _Event;
 	var _CustomEvent;
 	var _Event_prototype;
@@ -255,16 +243,14 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	var definePropertiesFallback;
 	var getOwnPropertyDescriptorFallback;
 	/** @const */
-	var
-		_Native_Date = global["Date"];
+	var _Native_Date = global["Date"];
 	var _Shimed_Date;
 	var _Shimed_Date_isoDateExpression;
 	var _Shimed_Date_monthes;
 	var _Shimed_Date_dayFromMonth;
 	var _nodesRecursivelyWalk;
 	/** @type {string} Space separator list of labelable element names */
-	var
-		_labelable_elements;
+	var _labelable_elements;
 	var OL_reversed_Shim;
 	var OL_reversed_autoInitFunction;
 	var throwTypeError = function (msg) {
