@@ -206,10 +206,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	var _Custom_Event_prototype;
 	var implementation_stopImmediatePropagation;
 	var _native_preventDefault;
-	var DOMStringCollection;
-	var DOMStringCollection_init;
-	var DOMStringCollection_getNodeClassName;
-	var DOMStringCollection_setNodeClassName;
 	var _classList_toggle = function (token, forse) {
 		token += "";
 		var thisObj = this
@@ -258,20 +254,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		document["head"] = document.getElementsByTagName("HEAD")[0];
 	}
 
-
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
-// --------------- ================ es5 shim ================ ---------------
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
-//  =======================================================================================
 // Based on https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js
 
 
@@ -918,9 +900,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 	}//if( __GCC__ECMA_SCRIPT6__ )
 
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Object prototype  ==================================  */
-	/*  =======================================================================================  */
 
-	/*  ======================================================================================  */
 	/*  ==================================  Array.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
 	/*  ================================ bug fixing  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
@@ -1039,10 +1019,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 		_append(_Array_prototype_, /** @lends {Array.prototype} */{
 			/**
-			 * Array.prototype.reduce
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/Reduce
-			 *
-			 * Apply a function against an accumulator and each value of the array (from left-to-right) as to reduce it to a single value.
 			 * @param {Function} accumulator Function to execute on each value in the array, taking four arguments:
 			 *    previousValue The value previously returned in the last invocation of the callback, or initialValue, if supplied. (See below.)
 			 *    currentValue The current element being processed in the array.
@@ -1078,19 +1054,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.reduceRight
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/reduceRight
-			 *
-			 Apply a function simultaneously against two values of the array (from right-to-left) as to reduce it to a single value.
-			 reduceRight executes the callback function once for each element present in the array, excluding holes in the array, receiving four arguments: the initial value (or value from the previous callback call), the value of the current element, the current index, and the array over which iteration is occurring.
-
-			 The call to the reduceRight callback would look something like this:
-			 array.reduceRight(function(previousValue, currentValue, index, array) {
-	    // ...
-	});
-
-			 The first time the function is called, the previousValue and currentValue can be one of two values. If an initialValue was provided in the call to reduceRight, then previousValue will be equal to initialValue and currentValue will be equal to the last value in the array. If no initialValue was provided, then previousValue will be equal to the last value in the array and currentValue will be equal to the second-to-last value.
-
 			 * @param {Function} accumulator Function to execute on each value in the array.
 			 * @param {*=} initialValue Object to use as the first argument to the first call of the callback.
 			 */
@@ -1121,11 +1084,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.forEach
-			 * ES5 15.4.4.18
-			 * http://es5.github.com/#x15.4.4.18
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/forEach
-			 * Executes a provided function once per array element.
 			 * @param {function(this:S, T, number, !Array<T>): ?|null} iterator Function to execute for each element.
 			 * @param {S=} context Object to use as this when executing callback.
 			 * @this {IArrayLike<T>|string}
@@ -1136,14 +1094,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.indexOf
-			 * ES5 15.4.4.14
-			 * http://es5.github.com/#x15.4.4.14
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
-			 *
-			 * https://gist.github.com/1034425
-			 *
-			 * Returns the first index at which a given element can be found in the array, or -1 if it is not present.
 			 * @param {T} searchElement Element to locate in the array.
 			 * @param {number=} fromIndex The index at which to begin the search. Defaults to 0, i.e. the whole array will be searched. If the index is greater than or equal to the length of the array, -1 is returned, i.e. the array will not be searched. If negative, it is taken as the offset from the end of the array. Note that even when the index is negative, the array is still searched from front to back. If the calculated index is less than 0, the whole array will be searched.
 			 * @return {number}
@@ -1202,11 +1152,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.lastIndexOf
-			 * ES5 15.4.4.15
-			 * http://es5.github.com/#x15.4.4.15
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
-			 * Returns the last index at which a given element can be found in the array, or -1 if it is not present. The array is searched backwards, starting at fromIndex.
 			 * @param {T} searchElement Element to locate in the array.
 			 * @param {number=} fromIndex The index at which to start searching backwards. Defaults to the array's length, i.e. the whole array will be searched. If the index is greater than or equal to the length of the array, the whole array will be searched. If negative, it is taken as the offset from the end of the array. Note that even when the index is negative, the array is still searched from back to front. If the calculated index is less than 0, -1 is returned, i.e. the array will not be searched.
 			 * @return {number}
@@ -1239,11 +1184,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.every
-			 * ES5 15.4.4.16
-			 * http://es5.github.com/#x15.4.4.16
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every
-			 * Tests whether all elements in the array pass the test implemented by the provided function.
 			 * @param {Function} callback Function to test for each element.
 			 * @param {Object=} context Object to use as this when executing callback.
 			 * @return {boolean}
@@ -1254,11 +1194,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.some
-			 * ES5 15.4.4.17
-			 * http://es5.github.com/#x15.4.4.17
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
-			 * Tests whether some element in the array passes the test implemented by the provided function.
 			 * @param {Function} callback Function to test for each element.
 			 * @param {Object=} context Object to use as this when executing callback.
 			 * @return {boolean}
@@ -1269,10 +1204,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.filter
-			 * http://es5.github.com/#x15.4.4.17
-			 * https://developer.mozilla.org/en/JavaScript/Reference/global_Objects/Array/filter
-			 * Creates a new array with all elements that pass the test implemented by the provided function.
 			 * @param {function(this:S, T, number, !Array<T>): ?|null} callback Function to test each element of the array.
 			 * @param {S=} thisObject Object to use as this when executing callback.
 			 * @return {!Array<T>}
@@ -1304,10 +1235,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Array.prototype.map
-			 * http://es5.github.com/#x15.4.4.19
-			 * https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/map
-			 * Creates a new array with the results of calling a provided function on every element in this array.
 			 * @param {function(this:S, T, number, !Array<T>): R|null} callback Function that produces an element of the new Array from an element of the current one.
 			 * @param {S=} thisObject Object to use as this when executing callback.
 			 * @return {!Array<R>}
@@ -1333,9 +1260,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  String  ==================================  */
-	/*  =============================================================================  */
 
-	/*  ======================================================================================  */
 	/*  ================================  String.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
 	if (__GCC__SCRIPT_BUGFIXING__
@@ -1428,7 +1353,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		});
 	}//if __GCC__ECMA_SCRIPT6__
 
-	/*  ======================================================================================  */
 	/*  ======================================  Events  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
 	if (__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL_DOM_EVENTS_LVL3__) {
@@ -1649,14 +1573,47 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		}
 	}
 
-	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Events  ======================================  */
+	/*  ========================================  DOM  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
+
+	if (__GCC__LEGACY_BROWSERS_SUPPORT__) {
+
+//[Opera lt 12]
+		if (__GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__) {
+			_tmp_ = "AT_TARGET";
+			if (!_Event_prototype[_tmp_] || Event[_tmp_]) {
+				_tmp_ = {
+					"CAPTURING_PHASE": 1
+					, "AT_TARGET": 2
+					, "BUBBLING_PHASE": 3
+				};
+				_append(_Event_prototype, _tmp_);
+				_append(Event, _tmp_);
+			}
+		}//if(__GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_50__)
+
+
+// window.getComputedStyle fix
+//FF say that pseudoElt param is required
+		if (global.getComputedStyle) {
+			try {
+				global.getComputedStyle(_testElement)
+			}
+			catch (e) {
+				global.getComputedStyle = _fastUnsafe_Function_bind_.call(function (obj, pseudoElt) {
+					return this.call(global, obj, pseudoElt || null)
+				}, global.getComputedStyle);
+			}
+		}
+	}//if(__GCC__LEGACY_BROWSERS_SUPPORT__)
 	/*  ======================================================================================  */
+	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  DOM  =======================================  */
+
+	/*  ======================================================================================  */
+	/*  ================================  Element.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
 
-	/*  =======================================================================================  */
-	/*  =================================  Utils.Dom  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
-	if (__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__)) {
+	/*  Some of from https://github.com/Raynos/DOM-shim/  */
+	if (__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__ || __GCC__DOM_API_POLYFILL_CLASSLIST_FIX__)) {
 		/**
 		 * DOMStringCollection
 		 * DOMSettableTokenList like object
@@ -1666,7 +1623,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		 * @param {Object} object_this context of onchange function
 		 * @constructor
 		 */
-		DOMStringCollection = function (getter, setter, object_this) {
+		var DOMStringCollection = function (getter, setter, object_this) {
 			/**
 			 * Event fired when any change apply to the object
 			 */
@@ -1681,7 +1638,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 		 * @param {DOMStringCollection} thisObj
 		 * @param {string} _string
 		 */
-		DOMStringCollection_init = function (thisObj, _string) {
+		var DOMStringCollection_init = function (thisObj, _string) {
 			var string = _string || "";
 			var isChange = !!thisObj.length;
 
@@ -1726,15 +1683,14 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 				if (/\s+/g.test(token)) _throwDOMException("INVALID_CHARACTER_ERR");
 			},
 			"add": function () {
-				var tokens = arguments
-					, i = 0
-					, l = tokens.length
-					, token
-					, thisObj = this
-					, currentValue
-					, prevValue
-					, updated = false
-				;
+				var tokens = arguments;
+				var i = 0;
+				var l = tokens.length;
+				var token;
+				var thisObj = this;
+				var currentValue;
+				var prevValue;
+				var updated = false;
 
 				this.DOMStringCollection_check_currentValue();
 				this.DOMStringCollection_check_Token_and_argumentsCount(null, l);
@@ -1830,55 +1786,7 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			return this["value"] || ""
 		};
-	}//if(__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__))
 
-
-	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Utils.Dom  ==================================  */
-	/*  =======================================================================================  */
-
-
-	/*  ======================================================================================  */
-	/*  ========================================  DOM  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
-	if (__GCC__LEGACY_BROWSERS_SUPPORT__) {
-
-//[Opera lt 12]
-		if (__GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__) {
-			_tmp_ = "AT_TARGET";
-			if (!_Event_prototype[_tmp_] || Event[_tmp_]) {
-				_tmp_ = {
-					"CAPTURING_PHASE": 1
-					, "AT_TARGET": 2
-					, "BUBBLING_PHASE": 3
-				};
-				_append(_Event_prototype, _tmp_);
-				_append(Event, _tmp_);
-			}
-		}//if(__GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_50__)
-
-
-// window.getComputedStyle fix
-//FF say that pseudoElt param is required
-		if (global.getComputedStyle) {
-			try {
-				global.getComputedStyle(_testElement)
-			}
-			catch (e) {
-				global.getComputedStyle = _fastUnsafe_Function_bind_.call(function (obj, pseudoElt) {
-					return this.call(global, obj, pseudoElt || null)
-				}, global.getComputedStyle);
-			}
-		}
-	}//if(__GCC__LEGACY_BROWSERS_SUPPORT__)
-	/*  ======================================================================================  */
-	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  DOM  =======================================  */
-
-	/*  ======================================================================================  */
-	/*  ================================  Element.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
-
-	/*  Some of from https://github.com/Raynos/DOM-shim/  */
-	if (__GCC__DOM_API_POLYFILL__ && (__GCC__DOM_API_POLYFILL_CLASSLIST__ || __GCC__DOM_API_POLYFILL_CLASSLIST_FIX__)) {
 
 		_tmp_ = !("classList" in _testElement) ?
 			undefined//doesn't support classList
@@ -1894,10 +1802,10 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 			) {
 				S_ELEMENT_CACHED_CLASSLIST_NAME = "_ccl_";
 
-				DOMStringCollection_setNodeClassName = function (newValue) {
+				var DOMStringCollection_setNodeClassName = function (newValue) {
 					this.className = newValue;
 				};
-				DOMStringCollection_getNodeClassName = function () {
+				var DOMStringCollection_getNodeClassName = function () {
 					return this.className;
 				};
 
@@ -2102,14 +2010,14 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 					if (!selector) return false;
 					if (selector === "*") return true;
 
-					var thisObj,
-						parent,
-						i,
-						k = 0,
-						str,
-						rules,
-						tmp,
-						match;
+					var thisObj;
+					var parent;
+					var i;
+					var k = 0;
+					var str;
+					var rules;
+					var tmp;
+					var match;
 
 					if (refNodes) {
 						//fast and unsafe isIterable. Note: <form> have 'length' prop
@@ -2359,18 +2267,17 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 				(global["Document"].prototype || document)["findAll"] = global["DocumentFragment"].prototype["findAll"] = function (selector, refNodes) {
 					refNodes && (("length" in refNodes && !("nodeType" in refNodes)) || (refNodes = [refNodes])) || (refNodes = [this]);
 
-					var result = []
-						, i = 0
-						, l = refNodes.length
-						, node
-						, tmpResult
-						, node2
-						, k
-						, n
-						, uuid
-						, uniqueMap = {}
-						, forsed
-					;
+					var result = [];
+					var i = 0;
+					var l = refNodes.length;
+					var node;
+					var tmpResult;
+					var node2;
+					var k;
+					var n;
+					var uuid;
+					var uniqueMap = {};
+					var forsed;
 
 					do {
 						node = refNodes[i];
@@ -2416,7 +2323,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 //Element.prototype.find
 //Element.prototype.findAll
 			if (!("find" in _Element_prototype)) {
-				//TODO:: add ':scope' support
+				//TODO: add ':scope' support
 				// http://lists.w3.org/Archives/Public/public-webapps/2011OctDec/0316.html (Re: QSA, the problem with ":scope", and naming)
 				_Element_prototype["find"] = _Element_prototype.querySelector;
 				_Element_prototype["findAll"] = _Element_prototype.querySelectorAll;
@@ -2426,9 +2333,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 
 	}//if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL_DOM4_API__)
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Element.prototype  ==================================  */
-	/*  ======================================================================================  */
 
-	/*  ======================================================================================  */
 	/*  ================================  HTMLInputElement.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 	/*  ================================  HTMLButtonElement.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 	/*  ================================  HTMLKeygenElement.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
@@ -2493,9 +2398,6 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 			});
 	}//if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__LABELS_AND_CONTROL_POLYFILL__)
 
-	/*  ======================================================================================  */
-
-	/*  ======================================================================================  */
 	/*  ================================  HTMLLabelElement.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
 	if (__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__LABELS_AND_CONTROL_POLYFILL__) {
@@ -2542,13 +2444,9 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 			});
 		}
 	}//if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__LABELS_AND_CONTROL_POLYFILL__)
-
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  HTMLLabelElement.prototype  ==================================  */
-	/*  ======================================================================================  */
 
-	/*  ======================================================================================  */
 	/*  ================================  HTMLSelectElement.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-
 	/*
  * HTMLSelectElement.prototype.reversed
  * Reverse Ordered Lists in HTML5
@@ -2654,9 +2552,7 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 		}
 	}//if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL__REVERSE_POLYFILL__)
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  HTMLLabelElement.prototype  ==================================  */
-	/*  ======================================================================================  */
 
-	/*  =======================================================================================  */
 	/*  ================================  NodeList.prototype  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
 	if (__GCC__LEGACY_BROWSERS_SUPPORT__ && __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__) {
@@ -2788,16 +2684,8 @@ Object.defineProperty((global["HTMLUnknownElement"] && global["HTMLUnknownElemen
 		}
 	}//if(__GCC__DOM_API_POLYFILL__ && __GCC__DOM_API_POLYFILL_DOM4_API__ && __GCC__DOM_API_POLYFILL_DOM4_API_RADIONODELIST__)
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  NodeList.prototype  ==================================  */
-	/*  ======================================================================================  */
 
-
-	/*  =======================================================================================  */
 	/*  ========================================  Date  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
-//
-// Date
-// ====
-//
-
 	if (__GCC__SCRIPT_BUGFIXING__ && __GCC__SCRIPT_BUGFIXING_DATE__) {
 // ES5 15.9.5.43
 // http://es5.github.com/#x15.9.5.43
@@ -3042,10 +2930,6 @@ https://raw.github.com/csnover/js-iso8601/master/iso8601.min.js
 	}//if __GCC__SCRIPT_BUGFIXING__
 	/*  ======================================================================================  */
 	/*  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Date  =====================================  */
-
-
-	/*  =======================================================================================  */
-	/*  ========================================  Delete section  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  */
 
 	throwTypeError = function (msg) {
 		throw new TypeError(msg)
