@@ -1532,19 +1532,6 @@ var __GCC__LEGACY_BROWSERS_SUPPORT__OPERA_LT_12_10__ = true;
 
 			,
 			/**
-			 * Number.isNaN
-			 * 15.7.3.11
-			 *
-			 * @param value
-			 * @return {boolean}
-			 */
-			"isNaN": function (value) {
-				//return Object["is"](value, NaN);
-				return typeof value === 'number' && global["isNaN"](value);
-			}
-
-			,
-			/**
 			 * Number.isFinite
 			 * 15.7.3.12
 			 *
